@@ -1,12 +1,12 @@
 ﻿{
-  "inputDir": "\\\\willow\\storage\\Movies",
+  "inputDir": "C:\\Users\\tzmuda.POSTDATA\\Downloads",
   "outputDir": "",
   "extensions": [ ".avi", ".mkv" ],
   "log": {
     "errorPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads/videoconverter/",
     "infoPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads/videoconverter/"
   },
-  "minFileSize": "100",
+  "minFileSize": "1",
   "deleteSource": "false",
   "usePaths": "true",
   "moviesPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads\\Movies",

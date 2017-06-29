@@ -10,7 +10,7 @@ namespace Xabe.VideoConverter
         private Configuration()
         {
         }
-            
+
         public static IConfigurationRoot GetConfiguration()
         {
             return new ConfigurationBuilder()
@@ -18,7 +18,7 @@ namespace Xabe.VideoConverter
                                            .Skip(1)
                                            .ToArray())
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("settings.dev.local.json")
+                .AddJsonFile("settings.json")
                 .Build();
         }
     }

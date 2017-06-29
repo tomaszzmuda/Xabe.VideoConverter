@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Xabe.FFMpeg;
 using Xabe.VideoConverter.FFMpeg;
 using Xabe.VideoConverter.Providers;
 
@@ -52,7 +53,7 @@ namespace Xabe.VideoConverter
                     }
 
                     outputPath = GetOutputPath(file);
-                    CreateHash(file, outputPath);
+                    SaveSourceInfo(file, outputPath);
 
                     if(File.Exists(outputPath))
                         File.Delete(outputPath);
@@ -102,11 +103,10 @@ namespace Xabe.VideoConverter
             return file;
         }
 
-        private void CreateHash(FileInfo file, string outputPath)
+        private void SaveSourceInfo(FileInfo file, string outputPath)
         {
-            string hash = MovieHasher.ComputeMovieHash(file.FullName)
-                                     .ToHexadecimal();
-            File.WriteAllText(Path.Combine(new FileInfo(outputPath).Directory.FullName, outputPath.ChangeExtension(".hash")), hash);
+            var videoInfo = new VideoInfo(file);
+            File.WriteAllText(Path.Combine(new FileInfo(outputPath).Directory.FullName, outputPath.ChangeExtension(".info")), videoInfo.ToString());
         }
 
         private string GetOutputPath(FileInfo file)
