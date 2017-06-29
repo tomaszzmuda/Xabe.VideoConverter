@@ -13,8 +13,8 @@ namespace Xabe.VideoConverter
         public static void Init(ILoggerFactory factory, ISettings settings)
         {
             factory.AddConsole();
-            factory.AddFile(Path.Combine(settings.log.errorPath, $"error_{Environment.MachineName}.log"), LogLevel.Error);
-            factory.AddFile(Path.Combine(settings.log.infoPath, $"info_{Environment.MachineName}.log"));
+            factory.AddFile(Path.Combine(settings.Log.ErrorPath, $"error_{Environment.MachineName}.log"), LogLevel.Error);
+            factory.AddFile(Path.Combine(settings.Log.InfoPath, $"info_{Environment.MachineName}.log"));
         }
     }
 }

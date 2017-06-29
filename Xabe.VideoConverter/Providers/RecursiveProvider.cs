@@ -20,7 +20,7 @@ namespace Xabe.VideoConverter.Providers
             _logger = logger;
             _fileList = new Queue<FileInfo>();
 
-            foreach(var inputDir in _settings.inputs)
+            foreach(var inputDir in _settings.Inputs)
             {
                 if(!new DirectoryInfo(inputDir).Exists)
                     throw new IOException($"Directory {inputDir} doesn't exist.");
@@ -59,13 +59,13 @@ namespace Xabe.VideoConverter.Providers
         {
             await Task.Run(() =>
             {
-                foreach(string inputDirectory in _settings.inputs)
+                foreach(string inputDirectory in _settings.Inputs)
                 {
                     _directory = new DirectoryInfo(inputDirectory);
                     List<FileInfo> allFiles = _directory.GetFiles("*", SearchOption.AllDirectories)
                                                         .ToList();
                     allFiles = allFiles.ToList()
-                                       .FindAll(x => _settings.extensions.Contains(x.Extension) && x.Length >= _settings.minFileSize * 8 * 1024)
+                                       .FindAll(x => _settings.Extensions.Contains(x.Extension) && x.Length >= _settings.MinFileSize * 8 * 1024)
                                        .ToList();
                     foreach(FileInfo file in allFiles.OrderBy(x => x.Name))
                         _fileList.Enqueue(file);

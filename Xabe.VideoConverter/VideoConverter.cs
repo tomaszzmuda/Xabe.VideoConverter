@@ -55,7 +55,7 @@ namespace Xabe.VideoConverter
 
                     outputPath = GetOutputPath(file);
 
-                    if(_settings.saveSourceInfo)
+                    if(_settings.SaveSourceInfo)
                         SaveSourceInfo(file, outputPath);
 
                     if(File.Exists(outputPath))
@@ -83,7 +83,7 @@ namespace Xabe.VideoConverter
                 File.Delete(outputPath);
                 _iffmpeg.Dispose();
             }
-            else if(_settings.deleteSource)
+            else if(_settings.DeleteSource)
             {
                 await _provider.Delete();
             }
@@ -115,11 +115,11 @@ namespace Xabe.VideoConverter
         private string GetOutputPath(FileInfo file)
         {
             var outputDir = "";
-            if(_settings.usePaths)
+            if(_settings.UsePaths)
                 if(file.IsTvShow())
-                    outputDir = Path.Combine(_settings.serialsPath, $"{file.RemoveTvShowInfo()}", $"Season {file.GetSeason()}");
+                    outputDir = Path.Combine(_settings.SerialsPath, $"{file.RemoveTvShowInfo()}", $"Season {file.GetSeason()}");
                 else
-                    outputDir = Path.Combine(_settings.moviesPath, $"{file.GetNormalizedName()}");
+                    outputDir = Path.Combine(_settings.MoviesPath, $"{file.GetNormalizedName()}");
             else
                 outputDir = file.Directory.FullName;
 

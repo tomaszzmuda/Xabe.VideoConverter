@@ -25,37 +25,37 @@ namespace Xabe.VideoConverter
 
     public interface ISettings
     {
-        string[] extensions { get; set; }
-        Log log { get; set; }
-        string[] inputs { get; set; }
-        int minFileSize { get; set; }
-        bool deleteSource { get; set; }
-        bool usePaths { get; set; }
-        string moviesPath { get; set; }
-        string serialsPath { get; set; }
-        string youtubeApiKey { get; set; }
-        bool downloadTrailers { get; set; }
-        bool saveSourceInfo { get; set; }
+        string[] Extensions { get; set; }
+        Log Log { get; set; }
+        string[] Inputs { get; set; }
+        int MinFileSize { get; set; }
+        bool DeleteSource { get; set; }
+        bool UsePaths { get; set; }
+        string MoviesPath { get; set; }
+        string SerialsPath { get; set; }
+        string YoutubeApiKey { get; set; }
+        bool DownloadTrailers { get; set; }
+        bool SaveSourceInfo { get; set; }
     }
 
     public class Settings: ISettings
     {
-        public string[] extensions { get; set; }
-        public Log log { get; set; }
-        public string[] inputs { get; set; }
-        public int minFileSize { get; set; }
-        public bool deleteSource { get; set; }
-        public bool usePaths { get; set; }
-        public string moviesPath { get; set; }
-        public string serialsPath { get; set; }
-        public string youtubeApiKey { get; set; }
-        public bool downloadTrailers { get; set; }
-        public bool saveSourceInfo { get; set; }
+        public string[] Extensions { get; set; }
+        public Log Log { get; set; }
+        public string[] Inputs { get; set; }
+        public int MinFileSize { get; set; }
+        public bool DeleteSource { get; set; }
+        public bool UsePaths { get; set; }
+        public string MoviesPath { get; set; }
+        public string SerialsPath { get; set; }
+        public string YoutubeApiKey { get; set; }
+        public bool DownloadTrailers { get; set; }
+        public bool SaveSourceInfo { get; set; }
     }
 
     public class Log
     {
-        public string errorPath { get; set; }
-        public string infoPath { get; set; }
+        public string ErrorPath { get; set; }
+        public string InfoPath { get; set; }
     }
 }

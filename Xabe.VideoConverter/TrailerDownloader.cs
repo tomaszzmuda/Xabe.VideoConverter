@@ -25,7 +25,7 @@ namespace Xabe.VideoConverter
         {
             var youtubeService = new YouTubeService(new BaseClientService.Initializer
             {
-                ApiKey = _settings.youtubeApiKey,
+                ApiKey = _settings.YoutubeApiKey,
                 ApplicationName = GetType()
                     .ToString()
             });

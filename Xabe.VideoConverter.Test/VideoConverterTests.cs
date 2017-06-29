@@ -40,13 +40,13 @@ namespace Xabe.VideoConverter.Test
                 It.IsAny<Func<object, Exception, string>>()))
                    .Verifiable();
 
-            _settings.Setup(x => x.deleteSource)
+            _settings.Setup(x => x.DeleteSource)
                      .Returns(false);
-            _settings.Setup(x => x.inputs)
+            _settings.Setup(x => x.Inputs)
                      .Returns(new[] {_tempDir});
-            _settings.Setup(x => x.usePaths)
+            _settings.Setup(x => x.UsePaths)
                      .Returns(false);
-            _settings.Setup(x => x.saveSourceInfo)
+            _settings.Setup(x => x.SaveSourceInfo)
                      .Returns(false);
         }
 

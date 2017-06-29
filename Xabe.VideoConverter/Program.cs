@@ -45,7 +45,7 @@ namespace Xabe.VideoConverter
         {
             var videoConverter = services.GetService<VideoConverter>();
             outputFilePath = await videoConverter.Execute();
-            if(_settings.downloadTrailers &&
+            if(_settings.DownloadTrailers &&
                !string.IsNullOrWhiteSpace(outputFilePath))
             {
                 var trailerDownloader = services.GetService<TrailerDownloader>();
