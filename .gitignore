@@ -2,26 +2,10 @@
 # Ten plik .gitignore został utworzony automatycznie przez Microsoft(R) Visual Studio.
 ################################################################################
 
-/videoconverter/obj
-/videoconverter/bin/Debug/netcoreapp2.0
-/FFMpegSharp/bin
-/FFMpegSharp/FFMPEG/bin/presets
-/FFMpegSharp/obj
-/FFMpegSharp.Tests/bin/Debug/netstandard2.0
-/FFMpegSharp.Tests/obj/Debug/netstandard2.0/FFMpegSharp.Tests.AssemblyInfo.cs
-/FFMpegSharp.Tests/obj
-/Xabe.FileLock/bin/Debug/netstandard2.0
-/Xabe.FileLock/obj
-/Xabe.FileLock.Test/obj
-/Xabe.FileLock.Test/bin/Debug/netcoreapp2.0
 /Xabe.VideoConverter.Test/obj
 /Xabe.VideoConverter.Test/bin/Debug/netcoreapp2.0
 /.vs/videoconverter/v15/sqlite3
 /Xabe.VideoConverter/bin/Debug/netcoreapp2.0
 /Xabe.VideoConverter/obj
-/Xabe.FFMpeg/bin/Debug/netstandard2.0
-/Xabe.FFMpeg/obj
-/Xabe.FFMpeg.Test/obj
-/Xabe.FFMpeg.Test/bin/Debug/netcoreapp2.0
 /.vs/Xabe.VideoConverter/v15/sqlite3/storage.ide
 /.vs/config/applicationhost.config
