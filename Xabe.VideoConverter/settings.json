@@ -1,6 +1,5 @@
 ﻿{
-    "inputDir": "/mnt/storage/Movies",
-    "outputDir": "",
+    "inputs": [ "C:\\Users\\tzmuda.POSTDATA\\Downloads" ],
     "extensions": [".avi", ".mkv"],
     "minFileSize": "200",
     "deleteSource": "true",

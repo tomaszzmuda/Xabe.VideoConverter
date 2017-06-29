@@ -17,8 +17,8 @@ namespace Xabe.VideoConverter.Test
             _tempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid()
                                                                                       .ToString()))
                                 .FullName;
-            _settings.Setup(x => x.inputDir)
-                     .Returns(_tempDir);
+            _settings.Setup(x => x.inputs)
+                     .Returns(new[] {_tempDir});
             _settings.Setup(x => x.extensions)
                      .Returns(new[] {Extension});
 

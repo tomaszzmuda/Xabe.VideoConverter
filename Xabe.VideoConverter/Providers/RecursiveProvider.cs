@@ -20,8 +20,12 @@ namespace Xabe.VideoConverter.Providers
             _logger = logger;
             _fileList = new Queue<FileInfo>();
 
-            if(!new DirectoryInfo(settings.inputDir).Exists)
-                throw new IOException($"Directory {_settings.inputDir} doesn't exist.");
+            foreach(var inputDir in _settings.inputs)
+            {
+                if(!new DirectoryInfo(inputDir).Exists)
+                    throw new IOException($"Directory {inputDir} doesn't exist.");
+            }
+
             Task.Run(async () => await Refresh())
                 .Wait();
         }
@@ -55,14 +59,18 @@ namespace Xabe.VideoConverter.Providers
         {
             await Task.Run(() =>
             {
-                _directory = new DirectoryInfo(_settings.inputDir);
-                List<FileInfo> allFiles = _directory.GetFiles("*", SearchOption.AllDirectories)
-                                                    .ToList();
-                allFiles = allFiles.ToList()
-                                   .FindAll(x => _settings.extensions.Contains(x.Extension) && x.Length >= _settings.minFileSize * 8 * 1024)
-                                   .ToList();
-                foreach(FileInfo file in allFiles.OrderBy(x => x.Name))
-                    _fileList.Enqueue(file);
+                foreach(string inputDirectory in _settings.inputs)
+                {
+                    _directory = new DirectoryInfo(inputDirectory);
+                    List<FileInfo> allFiles = _directory.GetFiles("*", SearchOption.AllDirectories)
+                                                        .ToList();
+                    allFiles = allFiles.ToList()
+                                       .FindAll(x => _settings.extensions.Contains(x.Extension) && x.Length >= _settings.minFileSize * 8 * 1024)
+                                       .ToList();
+                    foreach(FileInfo file in allFiles.OrderBy(x => x.Name))
+                        _fileList.Enqueue(file);
+                }
+
                 _logger.LogInformation($"Update file list. Found {_fileList.Count} files");
             });
         }

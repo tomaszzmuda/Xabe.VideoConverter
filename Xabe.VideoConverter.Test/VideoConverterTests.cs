@@ -42,8 +42,8 @@ namespace Xabe.VideoConverter.Test
 
             _settings.Setup(x => x.deleteSource)
                      .Returns(false);
-            _settings.Setup(x => x.outputDir)
-                     .Returns(_tempDir);
+            _settings.Setup(x => x.inputs)
+                     .Returns(new[] {_tempDir});
             _settings.Setup(x => x.usePaths)
                      .Returns(false);
             _settings.Setup(x => x.saveSourceInfo)

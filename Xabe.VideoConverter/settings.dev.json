@@ -1,7 +1,6 @@
 ﻿{
-  "inputDir": "C:\\Users\\tzmuda.POSTDATA\\Downloads",
-  "outputDir": "",
-  "extensions": [ ".avi", ".mkv" ],
+  "extensions": [ ".avi", ".mkv", ".mp4" ],
+  "inputs": [ "C:\\Users\\tzmuda.POSTDATA\\Downloads" ],
   "log": {
     "errorPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads/videoconverter/",
     "infoPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads/videoconverter/"

@@ -25,10 +25,9 @@ namespace Xabe.VideoConverter
 
     public interface ISettings
     {
-        string inputDir { get; set; }
-        string outputDir { get; set; }
         string[] extensions { get; set; }
         Log log { get; set; }
+        string[] inputs { get; set; }
         int minFileSize { get; set; }
         bool deleteSource { get; set; }
         bool usePaths { get; set; }
@@ -41,10 +40,9 @@ namespace Xabe.VideoConverter
 
     public class Settings: ISettings
     {
-        public string inputDir { get; set; }
-        public string outputDir { get; set; }
         public string[] extensions { get; set; }
         public Log log { get; set; }
+        public string[] inputs { get; set; }
         public int minFileSize { get; set; }
         public bool deleteSource { get; set; }
         public bool usePaths { get; set; }

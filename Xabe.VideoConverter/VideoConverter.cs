@@ -54,7 +54,7 @@ namespace Xabe.VideoConverter
                     }
 
                     outputPath = GetOutputPath(file);
-                    
+
                     if(_settings.saveSourceInfo)
                         SaveSourceInfo(file, outputPath);
 
@@ -114,7 +114,7 @@ namespace Xabe.VideoConverter
 
         private string GetOutputPath(FileInfo file)
         {
-            string outputDir = _settings.outputDir;
+            var outputDir = "";
             if(_settings.usePaths)
                 if(file.IsTvShow())
                     outputDir = Path.Combine(_settings.serialsPath, $"{file.RemoveTvShowInfo()}", $"Season {file.GetSeason()}");
