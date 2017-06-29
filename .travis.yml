@@ -1,0 +1,10 @@
+language: csharp
+mono: none
+dotnet: 2.0.0
+dist: trusty
+script:
+ - dotnet restore Xabe.VideoConverter.Test/
+ - dotnet test Xabe.VideoConverter.Test/
+ - dotnet restore Xabe.VideoConverter/
+ - dotnet build Xabe.VideoConverter/ -c Release
+ 

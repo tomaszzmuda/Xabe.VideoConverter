@@ -1,0 +1,16 @@
+﻿{
+  "inputDir": "\\\\willow\\storage\\Movies",
+  "outputDir": "",
+  "extensions": [ ".avi", ".mkv" ],
+  "log": {
+    "errorPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads/videoconverter/",
+    "infoPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads/videoconverter/"
+  },
+  "minFileSize": "100",
+  "deleteSource": "false",
+  "usePaths": "true",
+  "moviesPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads\\Movies",
+  "serialsPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads\\Serials",
+  "youtubeApiKey": "AIzaSyB6IJ4SJas0mkO907o7fMUOgqNSE3pOw1E",
+  "downloadTrailers": "true"
+}

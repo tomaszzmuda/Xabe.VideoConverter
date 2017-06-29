@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PreBuildEvent></PreBuildEvent>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.27.1.760" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.1" />
+    <PackageReference Include="Xabe.FFMpeg" Version="1.0.1" />
+    <PackageReference Include="Xabe.FileLock" Version="1.0.4" />
+    <PackageReference Include="YoutubeExtractor" Version="0.10.11" />
+  </ItemGroup>
+
+</Project>
