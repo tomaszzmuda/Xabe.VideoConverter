@@ -46,6 +46,8 @@ namespace Xabe.VideoConverter.Test
                      .Returns(_tempDir);
             _settings.Setup(x => x.usePaths)
                      .Returns(false);
+            _settings.Setup(x => x.saveSourceInfo)
+                     .Returns(false);
         }
 
         private readonly Mock<ISettings> _settings;

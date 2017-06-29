@@ -12,5 +12,6 @@
     "moviesPath": "/mnt/storage/Movies/",
     "serialsPath": "/mnt/storage/Serials/",
     "youtubeApiKey": "AIzaSyB6IJ4SJas0mkO907o7fMUOgqNSE3pOw1E",
-    "downloadTrailers": "true"
+    "downloadTrailers": "true",
+    "saveSourceInfo": "true" 
   }

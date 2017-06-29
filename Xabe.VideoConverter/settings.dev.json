@@ -12,5 +12,6 @@
   "moviesPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads\\Movies",
   "serialsPath": "C:\\Users\\tzmuda.POSTDATA\\Downloads\\Serials",
   "youtubeApiKey": "AIzaSyB6IJ4SJas0mkO907o7fMUOgqNSE3pOw1E",
-  "downloadTrailers": "true"
+  "downloadTrailers": "true",
+  "saveSourceInfo": "true"
 }

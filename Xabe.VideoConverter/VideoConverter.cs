@@ -17,6 +17,7 @@ namespace Xabe.VideoConverter
         private string _fileName;
         private int _percent;
 
+
         public VideoConverter(IFFMpeg iffmpeg, ISettings settings, ILogger<VideoConverter> logger, IFileProvider provider)
         {
             _iffmpeg = iffmpeg;
@@ -53,7 +54,9 @@ namespace Xabe.VideoConverter
                     }
 
                     outputPath = GetOutputPath(file);
-                    SaveSourceInfo(file, outputPath);
+                    
+                    if(_settings.saveSourceInfo)
+                        SaveSourceInfo(file, outputPath);
 
                     if(File.Exists(outputPath))
                         File.Delete(outputPath);
