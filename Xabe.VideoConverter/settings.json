@@ -1,16 +1,16 @@
 ﻿{
-    "inputs": [ "C:\\Users\\tzmuda.POSTDATA\\Downloads" ],
-    "extensions": [".avi", ".mkv"],
-    "minFileSize": "200",
-    "deleteSource": "true",
-    "log": {
-        "errorPath": "/mnt/storage/tmp/videoconverter/",
-        "infoPath": "/mnt/storage/tmp/videoconverter/"
-      },
-    "usePaths": "true",
-    "moviesPath": "/mnt/storage/Movies/",
-    "serialsPath": "/mnt/storage/Serials/",
-    "youtubeApiKey": "AIzaSyB6IJ4SJas0mkO907o7fMUOgqNSE3pOw1E",
-    "downloadTrailers": "true",
-    "saveSourceInfo": "true" 
-  }
+  "extensions": [ ".avi", ".mkv" ],
+  "inputs": [ "/DirectoryWithMovies/" ],
+  "log": {
+    "errorPath": "/log/",
+    "infoPath": "/log/"
+  },
+  "minFileSize": "1",
+  "deleteSource": "false",
+  "usePaths": "true",
+  "moviesPath": "/Movies/",
+  "serialsPath": "/Serials",
+  "youtubeApiKey": "",
+  "downloadTrailers": "true",
+  "saveSourceInfo": "true"
+}
