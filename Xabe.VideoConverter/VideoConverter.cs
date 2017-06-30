@@ -50,12 +50,6 @@ namespace Xabe.VideoConverter
                 {
                     using(fileLock)
                     {
-                        if(fileLock == null)
-                        {
-                            _logger.LogWarning($"File {file.Name} is locked. Skipping.");
-                            return null;
-                        }
-
                         outputPath = GetOutputPath(file);
 
                         if(_settings.SaveSourceInfo)
@@ -68,6 +62,11 @@ namespace Xabe.VideoConverter
                         _logger.LogInformation($"Start conversion of {_fileName}");
                         await Convert(outputPath, file);
                     }
+                }
+                else
+                {
+                    _logger.LogWarning($"File {file.Name} is locked. Skipping.");
+                    return null;
                 }
             }
             catch(Exception e)
