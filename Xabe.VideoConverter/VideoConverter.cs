@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Xabe.FFMpeg;
+using Xabe.FileLock;
 using Xabe.VideoConverter.FFMpeg;
 using Xabe.VideoConverter.Providers;
 
@@ -44,26 +45,29 @@ namespace Xabe.VideoConverter
                 FileInfo file = await GetFileToConvert();
                 if(file == null)
                     return null;
-
-                using(FileLock.FileLock fileLock = FileLock.FileLock.Acquire(file, TimeSpan.FromSeconds(15), true))
+                ILock fileLock = new FileLock.FileLock(file);
+                if(fileLock.TryAcquire(TimeSpan.FromSeconds(15), true))
                 {
-                    if(fileLock == null)
+                    using(fileLock)
                     {
-                        _logger.LogWarning($"File {file.Name} is locked. Skipping.");
-                        return null;
+                        if(fileLock == null)
+                        {
+                            _logger.LogWarning($"File {file.Name} is locked. Skipping.");
+                            return null;
+                        }
+
+                        outputPath = GetOutputPath(file);
+
+                        if(_settings.SaveSourceInfo)
+                            SaveSourceInfo(file, outputPath);
+
+                        if(File.Exists(outputPath))
+                            File.Delete(outputPath);
+                        _fileName = file.Name;
+
+                        _logger.LogInformation($"Start conversion of {_fileName}");
+                        await Convert(outputPath, file);
                     }
-
-                    outputPath = GetOutputPath(file);
-
-                    if(_settings.SaveSourceInfo)
-                        SaveSourceInfo(file, outputPath);
-
-                    if(File.Exists(outputPath))
-                        File.Delete(outputPath);
-                    _fileName = file.Name;
-
-                    _logger.LogInformation($"Start conversion of {_fileName}");
-                    await Convert(outputPath, file);
                 }
             }
             catch(Exception e)
