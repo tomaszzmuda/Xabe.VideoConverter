@@ -45,5 +45,10 @@ namespace Xabe.VideoConverter.FFMpeg
                 }
             });
         }
+
+        public string GetVideoInfo(FileInfo file)
+        {
+            return new VideoInfo(file).ToString();
+        }
     }
 }

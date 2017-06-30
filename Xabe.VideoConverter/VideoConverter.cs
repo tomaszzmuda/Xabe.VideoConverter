@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Xabe.FFMpeg;
 using Xabe.FileLock;
 using Xabe.VideoConverter.FFMpeg;
 using Xabe.VideoConverter.Providers;
@@ -111,8 +110,7 @@ namespace Xabe.VideoConverter
 
         private void SaveSourceInfo(FileInfo file, string outputPath)
         {
-            var videoInfo = new VideoInfo(file);
-            File.WriteAllText(Path.Combine(new FileInfo(outputPath).Directory.FullName, outputPath.ChangeExtension(".info")), videoInfo.ToString());
+            File.WriteAllText(Path.Combine(new FileInfo(outputPath).Directory.FullName, outputPath.ChangeExtension(".info")), _iffmpeg.GetVideoInfo(file));
         }
 
         private string GetOutputPath(FileInfo file)
