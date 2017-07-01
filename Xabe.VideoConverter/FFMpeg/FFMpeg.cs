@@ -11,11 +11,9 @@ namespace Xabe.VideoConverter.FFMpeg
     {
         private readonly Xabe.FFMpeg.FFMpeg _ffmpeg;
         private readonly ILogger<FFMpeg> _logger;
-        private readonly ISettings _settings;
 
-        public FFMpeg(ISettings settings, ILogger<FFMpeg> logger)
+        public FFMpeg(ILogger<FFMpeg> logger)
         {
-            _settings = settings;
             _logger = logger;
             _ffmpeg = new Xabe.FFMpeg.FFMpeg();
             _ffmpeg.OnProgress += (duration, totalLength) => OnChange(this, new ConvertProgressEventArgs(duration, totalLength));
