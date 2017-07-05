@@ -12,5 +12,6 @@
   "serialsPath": "\\\\willow\\storage\\Serials",
   "youtubeApiKey": "",
   "downloadTrailers": "false",
-  "saveSourceInfo": "true"
+  "saveSourceInfo": "true",
+  "createHash": "true"
 }

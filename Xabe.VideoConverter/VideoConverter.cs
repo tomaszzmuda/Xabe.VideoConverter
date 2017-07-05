@@ -63,24 +63,25 @@ namespace Xabe.VideoConverter
 
                 using(fileLock)
                 {
+                    _fileName = file.Name;
                     outputPath = GetOutputPath(file);
+
+                    if(File.Exists(outputPath))
+                        File.Delete(outputPath);
 
                     if(_settings.SaveSourceInfo)
                         SaveSourceInfo(file, outputPath);
 
-                    if(File.Exists(outputPath))
-                        File.Delete(outputPath);
-                    _fileName = file.Name;
-
-                    var hash = HashHelper.GetHash(file);
-                    File.WriteAllText(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
+                    if(_settings.CreateHash)
+                    {
+                        SaveHash(file, outputPath);
+                    }
                     //var x = await SubtitleDownloader.GetSubtitles(hash);
 
                     _logger.LogInformation($"Start conversion of {_fileName}");
-                    //await Convert(outputPath, file);
+                    await Convert(outputPath, file);
 
-                    if(_settings.DownloadTrailers &&
-                       !string.IsNullOrWhiteSpace(outputPath))
+                    if(_settings.DownloadTrailers)
                     {
                         await _trailerDownloader.DownloadTrailer(outputPath);
                     }
@@ -96,6 +97,12 @@ namespace Xabe.VideoConverter
             return outputPath;
         }
 
+        private static void SaveHash(FileInfo file, string outputPath)
+        {
+            var hash = HashHelper.GetHash(file);
+            File.WriteAllText(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
+        }
+
         private async Task Convert(string outputPath, FileInfo file)
         {
             if(!await _iffmpeg.ConvertMedia(file, outputPath))
@@ -107,23 +114,6 @@ namespace Xabe.VideoConverter
             {
                 await _provider.Delete();
             }
-        }
-
-        private async Task<FileInfo> GetFileToConvert()
-        {
-            FileInfo file = await _provider.GetNext();
-            if(file == null)
-            {
-                await _provider.Refresh();
-                file = await _provider.GetNext();
-                if(file == null)
-                {
-                    _logger.LogInformation($"Did not find any files to convert. Waiting.");
-                    return null;
-                }
-            }
-
-            return file;
         }
 
         private void SaveSourceInfo(FileInfo file, string outputPath)

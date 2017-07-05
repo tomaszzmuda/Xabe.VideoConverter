@@ -36,6 +36,7 @@ namespace Xabe.VideoConverter
         string YoutubeApiKey { get; set; }
         bool DownloadTrailers { get; set; }
         bool SaveSourceInfo { get; set; }
+        bool CreateHash { get; set; }
     }
 
     public class Settings: ISettings
@@ -51,6 +52,7 @@ namespace Xabe.VideoConverter
         public string YoutubeApiKey { get; set; }
         public bool DownloadTrailers { get; set; }
         public bool SaveSourceInfo { get; set; }
+        public bool CreateHash { get; set; }
     }
 
     public class Log
