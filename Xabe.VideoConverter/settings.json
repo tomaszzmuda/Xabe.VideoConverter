@@ -13,5 +13,6 @@
   "youtubeApiKey": "",
   "downloadTrailers": "false",
   "saveSourceInfo": "true",
-  "createHash": "true"
+  "createHash": "true",
+  "downloadSubtitles":  "true" 
 }

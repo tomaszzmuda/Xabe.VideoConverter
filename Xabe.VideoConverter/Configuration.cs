@@ -37,6 +37,7 @@ namespace Xabe.VideoConverter
         bool DownloadTrailers { get; set; }
         bool SaveSourceInfo { get; set; }
         bool CreateHash { get; set; }
+        bool DownloadSubtitles { get; set; }
     }
 
     public class Settings: ISettings
@@ -53,6 +54,7 @@ namespace Xabe.VideoConverter
         public bool DownloadTrailers { get; set; }
         public bool SaveSourceInfo { get; set; }
         public bool CreateHash { get; set; }
+        public bool DownloadSubtitles { get; set; }
     }
 
     public class Log

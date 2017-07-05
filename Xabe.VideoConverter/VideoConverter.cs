@@ -76,7 +76,10 @@ namespace Xabe.VideoConverter
                     {
                         SaveHash(file, outputPath);
                     }
-                    //var x = await SubtitleDownloader.GetSubtitles(hash);
+                    if(_settings.DownloadSubtitles)
+                    {
+                        await SubtitleDownloader.SaveSubtitles(file, outputPath);
+                    }
 
                     _logger.LogInformation($"Start conversion of {_fileName}");
                     await Convert(outputPath, file);
@@ -126,7 +129,7 @@ namespace Xabe.VideoConverter
             var outputDir = "";
             if(_settings.UsePaths)
                 if(file.IsTvShow())
-                    outputDir = Path.Combine(_settings.SerialsPath, $"{file.RemoveTvShowInfo()}", $"Season {file.GetSeason()}");
+                    outputDir = Path.Combine(_settings.SerialsPath, $"{file.GetNormalizedName() .RemoveTvShowInfo()}", $"Season {file.GetNormalizedName() .GetSeason()}");
                 else
                     outputDir = Path.Combine(_settings.MoviesPath, $"{file.GetNormalizedName()}");
             else
