@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Xabe.VideoConverter
 {
-    public static class Extensions
+    public static partial class Extensions
     {
         public static bool IsTvShow(this FileInfo file)
         {

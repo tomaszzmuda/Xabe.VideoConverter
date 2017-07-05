@@ -44,15 +44,7 @@ namespace Xabe.VideoConverter
         private static async Task<string> FormatVideo(ServiceProvider services, string outputFilePath)
         {
             var videoConverter = services.GetService<VideoConverter>();
-            outputFilePath = await videoConverter.Execute();
-            if(_settings.DownloadTrailers &&
-               !string.IsNullOrWhiteSpace(outputFilePath))
-            {
-                var trailerDownloader = services.GetService<TrailerDownloader>();
-                trailerDownloader.DownloadTrailer(outputFilePath);
-            }
-
-            return outputFilePath;
+            return await videoConverter.Execute();
         }
     }
 }

@@ -1,16 +1,16 @@
 ﻿{
   "extensions": [ ".avi", ".mkv" ],
-  "inputs": [ "/DirectoryWithMovies/" ],
+  "inputs": [ "\\\\willow\\storage\\apps\\Torrents" ],
   "log": {
-    "errorPath": "/log/",
-    "infoPath": "/log/"
+    "errorPath": "\\\\willow\\storage\\videoconverter\\",
+    "infoPath": "\\\\willow\\storage\\videoconverter\\"
   },
   "minFileSize": "1",
   "deleteSource": "false",
   "usePaths": "true",
-  "moviesPath": "/Movies/",
-  "serialsPath": "/Serials",
+  "moviesPath": "\\\\willow\\storage\\Movies",
+  "serialsPath": "\\\\willow\\storage\\Serials",
   "youtubeApiKey": "",
-  "downloadTrailers": "true",
+  "downloadTrailers": "false",
   "saveSourceInfo": "true"
 }

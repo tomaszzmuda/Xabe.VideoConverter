@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Xabe.FileLock;
@@ -14,16 +15,18 @@ namespace Xabe.VideoConverter
         private readonly ILogger<VideoConverter> _logger;
         private readonly IFileProvider _provider;
         private readonly ISettings _settings;
+        private readonly TrailerDownloader _trailerDownloader;
         private string _fileName;
         private int _percent;
 
 
-        public VideoConverter(IFFMpeg iffmpeg, ISettings settings, ILogger<VideoConverter> logger, IFileProvider provider)
+        public VideoConverter(IFFMpeg iffmpeg, ISettings settings, ILogger<VideoConverter> logger, IFileProvider provider, TrailerDownloader trailerDownloader)
         {
             _iffmpeg = iffmpeg;
             _settings = settings;
             _logger = logger;
             _provider = provider;
+            _trailerDownloader = trailerDownloader;
 
             _iffmpeg.OnChange += (sender, e) => _ffmpeg_ConvertProgress(e, _fileName);
         }
@@ -45,7 +48,7 @@ namespace Xabe.VideoConverter
                 if(file == null)
                     return null;
                 ILock fileLock = new FileLock.FileLock(file);
-                if(fileLock.TryAcquire(TimeSpan.FromSeconds(15), true))
+                if(await fileLock.TryAcquire(TimeSpan.FromSeconds(15), true))
                 {
                     using(fileLock)
                     {
@@ -58,8 +61,18 @@ namespace Xabe.VideoConverter
                             File.Delete(outputPath);
                         _fileName = file.Name;
 
+                        var hash = HashHelper.GetHash(file);
+                        File.WriteAllText(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
+                        //var x = await SubtitleDownloader.GetSubtitles(hash);
+
                         _logger.LogInformation($"Start conversion of {_fileName}");
-                        await Convert(outputPath, file);
+                        //await Convert(outputPath, file);
+
+                        if(_settings.DownloadTrailers &&
+                           !string.IsNullOrWhiteSpace(outputPath))
+                        {
+                            await _trailerDownloader.DownloadTrailer(outputPath);
+                        }
                     }
                 }
                 else
