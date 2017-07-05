@@ -65,7 +65,7 @@ namespace Xabe.VideoConverter.Test
             _ffmpeg.Setup(x => x.ConvertMedia(It.IsAny<FileInfo>(), It.IsAny<string>()))
                    .ReturnsAsync(() => true);
 
-            var videoConverter = new VideoConverter(_ffmpeg.Object, _settings.Object, _logger.Object, _provider.Object);
+            var videoConverter = new VideoConverter(_ffmpeg.Object, _settings.Object, _logger.Object, _provider.Object, null);
             string result = await videoConverter.Execute();
             Assert.NotNull(result);
         }
@@ -76,7 +76,7 @@ namespace Xabe.VideoConverter.Test
             _provider.Setup(x => x.GetNext())
                      .ReturnsAsync(() => null);
 
-            var videoConverter = new VideoConverter(_ffmpeg.Object, _settings.Object, _logger.Object, _provider.Object);
+            var videoConverter = new VideoConverter(_ffmpeg.Object, _settings.Object, _logger.Object, _provider.Object, null);
             string result = await videoConverter.Execute();
             Assert.Null(result);
         }

@@ -44,41 +44,46 @@ namespace Xabe.VideoConverter
             var outputPath = "";
             try
             {
-                FileInfo file = await GetFileToConvert();
-                if(file == null)
-                    return null;
-                ILock fileLock = new FileLock.FileLock(file);
-                if(await fileLock.TryAcquire(TimeSpan.FromSeconds(15), true))
+                FileInfo file;
+                ILock fileLock;
+                do
                 {
-                    using(fileLock)
+                    file = await _provider.GetNext();
+                    if(file == null)
                     {
-                        outputPath = GetOutputPath(file);
-
-                        if(_settings.SaveSourceInfo)
-                            SaveSourceInfo(file, outputPath);
-
-                        if(File.Exists(outputPath))
-                            File.Delete(outputPath);
-                        _fileName = file.Name;
-
-                        var hash = HashHelper.GetHash(file);
-                        File.WriteAllText(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
-                        //var x = await SubtitleDownloader.GetSubtitles(hash);
-
-                        _logger.LogInformation($"Start conversion of {_fileName}");
-                        //await Convert(outputPath, file);
-
-                        if(_settings.DownloadTrailers &&
-                           !string.IsNullOrWhiteSpace(outputPath))
-                        {
-                            await _trailerDownloader.DownloadTrailer(outputPath);
-                        }
+                        return null;
                     }
-                }
-                else
+                    fileLock = new FileLock.FileLock(file);
+                    if(fileLock == null)
+                    {
+                        break;
+                    }
+                } while(!await fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
+
+
+                using(fileLock)
                 {
-                    _logger.LogWarning($"File {file.Name} is locked. Skipping.");
-                    return null;
+                    outputPath = GetOutputPath(file);
+
+                    if(_settings.SaveSourceInfo)
+                        SaveSourceInfo(file, outputPath);
+
+                    if(File.Exists(outputPath))
+                        File.Delete(outputPath);
+                    _fileName = file.Name;
+
+                    var hash = HashHelper.GetHash(file);
+                    File.WriteAllText(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
+                    //var x = await SubtitleDownloader.GetSubtitles(hash);
+
+                    _logger.LogInformation($"Start conversion of {_fileName}");
+                    //await Convert(outputPath, file);
+
+                    if(_settings.DownloadTrailers &&
+                       !string.IsNullOrWhiteSpace(outputPath))
+                    {
+                        await _trailerDownloader.DownloadTrailer(outputPath);
+                    }
                 }
             }
             catch(Exception e)
