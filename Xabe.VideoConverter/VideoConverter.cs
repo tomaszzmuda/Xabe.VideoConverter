@@ -84,7 +84,8 @@ namespace Xabe.VideoConverter
                     _logger.LogInformation($"Start conversion of {_fileName}");
                     await Convert(outputPath, file);
 
-                    if(_settings.DownloadTrailers)
+                    if(_settings.DownloadTrailers &&
+                       !file.IsTvShow())
                     {
                         await _trailerDownloader.DownloadTrailer(outputPath);
                     }
