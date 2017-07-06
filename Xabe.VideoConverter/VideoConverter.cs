@@ -55,6 +55,7 @@ namespace Xabe.VideoConverter
                     file = await _provider.GetNext();
                     if(file == null)
                     {
+                        await _provider.Refresh();
                         return null;
                     }
                     fileLock = new FileLock.FileLock(file);
