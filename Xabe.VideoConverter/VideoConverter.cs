@@ -44,20 +44,20 @@ namespace Xabe.VideoConverter
             var outputPath = "";
             try
             {
-                FileInfo file;
+                FileInfo file = null;
                 ILock fileLock;
                 do
                 {
+                    if(file != null)
+                    {
+                        _logger.LogWarning($"Cannot create lock for file {file.Name}");
+                    }
                     file = await _provider.GetNext();
                     if(file == null)
                     {
                         return null;
                     }
                     fileLock = new FileLock.FileLock(file);
-                    if(fileLock == null)
-                    {
-                        break;
-                    }
                 } while(!fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
 
 
