@@ -34,10 +34,13 @@ namespace Xabe.VideoConverter.Providers
         {
             return await Task.Run(() =>
             {
-                _logger.LogInformation($"Get next item from queue.");
-                _fileList.TryDequeue(out _currentFile);
-                if(_currentFile != null)
-                    _logger.LogInformation($"Dequeue {_currentFile.Name}. Items left: {_fileList.Count}");
+                do
+                {
+                    _logger.LogInformation($"Get next item from queue.");
+                    _fileList.TryDequeue(out _currentFile);
+                    if(_currentFile != null)
+                        _logger.LogInformation($"Dequeue {_currentFile.Name}. Items left: {_fileList.Count}");
+                } while((_currentFile == null || !_currentFile.Exists) && _fileList.Count > 0);
                 return _currentFile;
             });
         }
