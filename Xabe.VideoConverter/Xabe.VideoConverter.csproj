@@ -31,7 +31,7 @@
     <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.1" />
     <PackageReference Include="Xabe.FFMpeg" Version="1.0.6" />
-    <PackageReference Include="Xabe.FileLock" Version="1.2.1" />
+    <PackageReference Include="Xabe.FileLock" Version="1.3.0" />
     <PackageReference Include="YoutubeExtractor" Version="0.10.11" />
   </ItemGroup>
 
