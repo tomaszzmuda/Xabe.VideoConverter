@@ -42,9 +42,10 @@ namespace Xabe.VideoConverter
         public async Task<string> Execute()
         {
             var outputPath = "";
+            FileInfo file = null;
+
             try
             {
-                FileInfo file = null;
                 ILock fileLock;
                 do
                 {
@@ -95,7 +96,9 @@ namespace Xabe.VideoConverter
             catch(Exception e)
             {
                 _logger.LogError(e.ToString());
-                if(!string.IsNullOrWhiteSpace(outputPath))
+                if(!string.IsNullOrWhiteSpace(outputPath) &&
+                   file != null &&
+                   file.Exists)
                     File.Delete(outputPath);
                 return null;
             }
