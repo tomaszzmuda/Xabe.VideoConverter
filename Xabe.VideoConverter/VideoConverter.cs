@@ -110,6 +110,12 @@ namespace Xabe.VideoConverter
 
         private async Task Convert(string outputPath, FileInfo file)
         {
+            if(file.Extension == ".mp4")
+            {
+                file.MoveTo(outputPath);
+                return;
+            }
+
             if(!await _iffmpeg.ConvertMedia(file, outputPath))
             {
                 File.Delete(outputPath);
