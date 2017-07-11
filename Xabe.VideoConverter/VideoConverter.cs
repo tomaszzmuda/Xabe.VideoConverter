@@ -71,26 +71,14 @@ namespace Xabe.VideoConverter
                     if(File.Exists(outputPath))
                         File.Delete(outputPath);
 
-                    if(_settings.SaveSourceInfo)
-                        SaveSourceInfo(file, outputPath);
+                    SaveSourceInfo(file, outputPath);
 
-                    if(_settings.CreateHash)
-                    {
-                        SaveHash(file, outputPath);
-                    }
-                    if(_settings.DownloadSubtitles)
-                    {
-                        await SubtitleDownloader.SaveSubtitles(file, outputPath);
-                    }
+                    SaveHash(file, outputPath);
+                    DownloadSubtitles(outputPath, file);
+                    DownloadTrailer(outputPath, file);
 
                     _logger.LogInformation($"Start conversion of {_fileName}");
                     await Convert(outputPath, file);
-
-                    if(_settings.DownloadTrailers &&
-                       !file.IsTvShow())
-                    {
-                        await _trailerDownloader.DownloadTrailer(outputPath);
-                    }
                 }
             }
             catch(Exception e)
@@ -105,17 +93,38 @@ namespace Xabe.VideoConverter
             return outputPath;
         }
 
-        private static void SaveHash(FileInfo file, string outputPath)
+        private async Task DownloadTrailer(string outputPath, FileInfo file)
         {
+            if(_settings.DownloadTrailers &&
+               !file.IsTvShow())
+            {
+                await _trailerDownloader.DownloadTrailer(outputPath);
+            }
+        }
+
+        private async Task DownloadSubtitles(string outputPath, FileInfo file)
+        {
+            if(_settings.DownloadSubtitles)
+            {
+                await SubtitleDownloader.SaveSubtitles(file, outputPath);
+            }
+        }
+
+        private async Task SaveHash(FileInfo file, string outputPath)
+        {
+            if(!_settings.CreateHash)
+            {
+                return;
+            }
             var hash = HashHelper.GetHash(file);
-            File.WriteAllText(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
+            await File.WriteAllTextAsync(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
         }
 
         private async Task Convert(string outputPath, FileInfo file)
         {
             if(file.Extension == ".mp4")
             {
-                file.MoveTo(outputPath);
+                File.Move(file.FullName, outputPath);
                 return;
             }
 
@@ -132,6 +141,9 @@ namespace Xabe.VideoConverter
 
         private void SaveSourceInfo(FileInfo file, string outputPath)
         {
+            if(!_settings.SaveSourceInfo)
+                return;
+
             File.WriteAllText(Path.Combine(new FileInfo(outputPath).Directory.FullName, outputPath.ChangeExtension(".info")), _iffmpeg.GetVideoInfo(file));
         }
 
