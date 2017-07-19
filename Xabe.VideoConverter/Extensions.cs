@@ -7,6 +7,16 @@ namespace Xabe.VideoConverter
 {
     public static partial class Extensions
     {
+        public static string RemoveIllegalCharacters(this string fileName)
+        {
+            string correctFileName = fileName;
+            foreach(var illegalChar in Path.GetInvalidFileNameChars())
+            {
+                correctFileName = correctFileName.Replace(illegalChar, ' ');
+            }
+            return correctFileName;
+        }
+
         public static bool IsTvShow(this FileInfo file)
         {
             return file.Name.IsTvShow();

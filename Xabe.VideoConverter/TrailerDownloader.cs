@@ -58,7 +58,8 @@ namespace Xabe.VideoConverter
             if(video.RequiresDecryption)
                 DownloadUrlResolver.DecryptDownloadUrl(video);
 
-            var videoDownloader = new VideoDownloader(video, Path.Combine(Path.GetDirectoryName(moviePath), $"{video.Title}-trailer{video.VideoExtension}"));
+            var videoDownloader = new VideoDownloader(video,
+                Path.Combine(Path.GetDirectoryName(moviePath), $"{video.Title.RemoveIllegalCharacters()}-trailer{video.VideoExtension}"));
 
             _logger.LogInformation($"Start downloading trailer for {movieName}");
             videoDownloader.Execute();

@@ -60,7 +60,7 @@ namespace Xabe.VideoConverter
                         return null;
                     }
                     fileLock = new FileLock.FileLock(file);
-                } while(!fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
+                } while(!await fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
 
 
                 using(fileLock)
