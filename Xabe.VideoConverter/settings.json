@@ -14,5 +14,6 @@
   "downloadTrailers": "false",
   "saveSourceInfo": "true",
   "createHash": "true",
-  "downloadSubtitles":  "true" 
+  "downloadSubtitles": "true",
+  "ffmpegPath": ""
 }

@@ -38,6 +38,7 @@ namespace Xabe.VideoConverter
         bool SaveSourceInfo { get; set; }
         bool CreateHash { get; set; }
         bool DownloadSubtitles { get; set; }
+        string ffmpegPath { get; set; }
     }
 
     public class Settings: ISettings
@@ -55,6 +56,7 @@ namespace Xabe.VideoConverter
         public bool SaveSourceInfo { get; set; }
         public bool CreateHash { get; set; }
         public bool DownloadSubtitles { get; set; }
+        public string ffmpegPath { get; set; }
     }
 
     public class Log
