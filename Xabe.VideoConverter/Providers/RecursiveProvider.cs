@@ -70,7 +70,7 @@ namespace Xabe.VideoConverter.Providers
                     List<FileInfo> allFiles = _directory.GetFiles("*", SearchOption.AllDirectories)
                                                         .ToList();
                     allFiles = allFiles.ToList()
-                                       .FindAll(x => _settings.Extensions.Contains(x.Extension) && x.Length >= _settings.MinFileSize * 8 * 1024)
+                                       .Where(x => _settings.Extensions.Contains(x.Extension) && x.Length >= _settings.MinFileSize * 8 * 1024)
                                        .ToList();
                     foreach(FileInfo file in allFiles.OrderBy(x => x.Name))
                         _fileList.Enqueue(file);
