@@ -33,18 +33,22 @@ namespace Xabe.VideoConverter
 
             while(true)
             {
-                bool conversionResult = false;
-                Task.Run(async () => { conversionResult = await FormatVideo(services); })
-                    .Wait();
+                var conversionResult = false;
+                try
+                {
+                    Task.Run(async () =>
+                    {
+                        var videoConverter = services.GetService<VideoConverter>();
+                        return await videoConverter.Execute();
+                    })
+                        .Wait();
+                }
+                catch(Exception)
+                {
+                }
                 if(!conversionResult)
                     Thread.Sleep(TimeSpan.FromMinutes(1));
             }
-        }
-
-        private static async Task<bool> FormatVideo(ServiceProvider services)
-        {
-            var videoConverter = services.GetService<VideoConverter>();
-            return await videoConverter.Execute();
         }
     }
 }

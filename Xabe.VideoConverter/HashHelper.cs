@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Xabe.VideoConverter
 {
-    class HashHelper
+    internal class HashHelper
     {
         private static byte[] ComputeMovieHash(string filename)
         {
@@ -23,7 +23,7 @@ namespace Xabe.VideoConverter
             lhash = streamsize;
 
             long i = 0;
-            byte[] buffer = new byte[sizeof(long)];
+            var buffer = new byte[sizeof(long)];
             while(i < 65536 / sizeof(long) &&
                   input.Read(buffer, 0, sizeof(long)) > 0)
             {
@@ -47,11 +47,9 @@ namespace Xabe.VideoConverter
 
         private static string ToHexadecimal(byte[] bytes)
         {
-            StringBuilder hexBuilder = new StringBuilder();
-            for(int i = 0; i < bytes.Length; i++)
-            {
+            var hexBuilder = new StringBuilder();
+            for(var i = 0; i < bytes.Length; i++)
                 hexBuilder.Append(bytes[i].ToString("x2"));
-            }
             return hexBuilder.ToString();
         }
 

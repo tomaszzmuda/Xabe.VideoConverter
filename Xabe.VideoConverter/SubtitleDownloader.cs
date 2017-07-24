@@ -7,11 +7,11 @@ using RestResponse = RestSharp.RestResponse;
 
 namespace Xabe.VideoConverter
 {
-    class SubtitleDownloader
+    internal class SubtitleDownloader
     {
         public static async Task SaveSubtitles(FileInfo file, string outputPath)
         {
-            var hash = HashHelper.GetHash(file);
+            string hash = HashHelper.GetHash(file);
             var client = new RestClient("http://opensubtitlesapi.azurewebsites.net/api/OpenSubtitles/GetByHash");
             var request = new RestRequest();
             request.AddParameter("hash", hash);
@@ -28,7 +28,7 @@ namespace Xabe.VideoConverter
     {
         public static async Task<RestResponse> ExecuteAsync(this RestClient client, RestRequest request)
         {
-            TaskCompletionSource<IRestResponse> taskCompletion = new TaskCompletionSource<IRestResponse>();
+            var taskCompletion = new TaskCompletionSource<IRestResponse>();
             RestRequestAsyncHandle handle = client.ExecuteAsync(request, r => taskCompletion.SetResult(r));
             return (RestResponse) await taskCompletion.Task;
         }

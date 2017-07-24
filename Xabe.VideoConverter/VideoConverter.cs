@@ -51,9 +51,7 @@ namespace Xabe.VideoConverter
                 file = tuple.Item2;
 
                 if(fileLock == null)
-                {
                     return false;
-                }
                 using(fileLock)
                 {
                     outputPath = await ProceedFile(file);
@@ -85,16 +83,12 @@ namespace Xabe.VideoConverter
 
 
             if(file.Extension == ".mp4")
-            {
                 File.Move(file.FullName, outputPath);
-            }
             else
-            {
                 using(_iffmpeg)
                 {
                     await _iffmpeg.ConvertMedia(file, outputPath);
                 }
-            }
 
             Task saveSourceInfo = SaveSourceInfo(file, outputPath);
             Task saveHash = SaveHash(file, outputPath);
@@ -118,9 +112,7 @@ namespace Xabe.VideoConverter
             do
             {
                 if(file != null)
-                {
                     _logger.LogWarning($"Cannot create lock for file {file.Name}");
-                }
                 file = await _provider.GetNext();
                 if(file == null)
                 {
@@ -136,26 +128,20 @@ namespace Xabe.VideoConverter
         {
             if(_settings.DownloadTrailers &&
                !file.IsTvShow())
-            {
                 await _trailerDownloader.DownloadTrailer(outputPath);
-            }
         }
 
         private async Task DownloadSubtitles(string outputPath, FileInfo file)
         {
             if(_settings.DownloadSubtitles)
-            {
                 await SubtitleDownloader.SaveSubtitles(file, outputPath);
-            }
         }
 
         private async Task SaveHash(FileInfo file, string outputPath)
         {
             if(!_settings.CreateHash)
-            {
                 return;
-            }
-            var hash = HashHelper.GetHash(file);
+            string hash = HashHelper.GetHash(file);
             await File.WriteAllTextAsync(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
         }
 

@@ -20,11 +20,9 @@ namespace Xabe.VideoConverter.Providers
             _logger = logger;
             _fileList = new Queue<FileInfo>();
 
-            foreach(var inputDir in _settings.Inputs)
-            {
+            foreach(string inputDir in _settings.Inputs)
                 if(!new DirectoryInfo(inputDir).Exists)
                     throw new IOException($"Directory {inputDir} doesn't exist.");
-            }
 
             Task.Run(async () => await Refresh())
                 .Wait();

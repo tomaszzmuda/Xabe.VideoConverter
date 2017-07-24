@@ -77,14 +77,14 @@ namespace Xabe.VideoConverter.Test
             string tmpFilePathA = Path.Combine(_tempDir, Path.ChangeExtension("a" + Path.GetRandomFileName(), Extension));
             File.Create(tmpFilePathA)
                 .Close();
-            var tmpFilePathB = Path.Combine(_tempDir, Path.ChangeExtension("b" + Path.GetRandomFileName(), Extension));
+            string tmpFilePathB = Path.Combine(_tempDir, Path.ChangeExtension("b" + Path.GetRandomFileName(), Extension));
             File.Create(tmpFilePathB)
                 .Close();
 
             var recursiveProvider = new RecursiveProvider(_settings.Object, _logger.Object);
             File.Delete(tmpFilePathA);
 
-            var nextFile = await recursiveProvider.GetNext();
+            FileInfo nextFile = await recursiveProvider.GetNext();
 
             Assert.NotNull(nextFile);
         }

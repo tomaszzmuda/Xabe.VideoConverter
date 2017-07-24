@@ -14,9 +14,7 @@ namespace Xabe.VideoConverter.FFMpeg
         public FFMpeg(ILogger<FFMpeg> logger, ISettings settings)
         {
             if(!string.IsNullOrWhiteSpace(settings.ffmpegPath))
-            {
                 FFBase.FFMpegDir = settings.ffmpegPath;
-            }
 
             _logger = logger;
             _ffmpeg = new Xabe.FFMpeg.FFMpeg();
