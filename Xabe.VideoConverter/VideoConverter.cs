@@ -56,36 +56,7 @@ namespace Xabe.VideoConverter
                 }
                 using(fileLock)
                 {
-                    _fileName = file.Name;
-                    outputPath = GetOutputPath(file);
-
-                    if(File.Exists(outputPath))
-                        File.Delete(outputPath);
-
-
-                    if(file.Extension == ".mp4")
-                    {
-                        File.Move(file.FullName, outputPath);
-                    }
-                    else
-                    {
-                        using(_iffmpeg)
-                        {
-                            await _iffmpeg.ConvertMedia(file, outputPath);
-                        }
-                    }
-
-                    Task saveSourceInfo = SaveSourceInfo(file, outputPath);
-                    Task saveHash = SaveHash(file, outputPath);
-                    Task downloadSubtitles = DownloadSubtitles(outputPath, file);
-                    Task downloadTrailer = DownloadTrailer(outputPath, file);
-
-                    await Task.WhenAll(saveSourceInfo, saveHash, downloadSubtitles, downloadTrailer);
-                    if(_settings.DeleteSource)
-                    {
-                        file.Delete();
-                        _logger.LogInformation($"Deleted file {file.Name}");
-                    }
+                    outputPath = await ProceedFile(file);
                 }
             }
             catch(Exception e)
@@ -102,6 +73,42 @@ namespace Xabe.VideoConverter
                 _iffmpeg.Dispose();
             }
             return true;
+        }
+
+        private async Task<string> ProceedFile(FileInfo file)
+        {
+            _fileName = file.Name;
+            string outputPath = GetOutputPath(file);
+
+            if(File.Exists(outputPath))
+                File.Delete(outputPath);
+
+
+            if(file.Extension == ".mp4")
+            {
+                File.Move(file.FullName, outputPath);
+            }
+            else
+            {
+                using(_iffmpeg)
+                {
+                    await _iffmpeg.ConvertMedia(file, outputPath);
+                }
+            }
+
+            Task saveSourceInfo = SaveSourceInfo(file, outputPath);
+            Task saveHash = SaveHash(file, outputPath);
+            Task downloadSubtitles = DownloadSubtitles(outputPath, file);
+            Task downloadTrailer = DownloadTrailer(outputPath, file);
+
+            await Task.WhenAll(saveSourceInfo, saveHash, downloadSubtitles, downloadTrailer);
+            if(_settings.DeleteSource)
+            {
+                file.Delete();
+                _logger.LogInformation($"Deleted file {file.Name}");
+            }
+
+            return outputPath;
         }
 
         private async Task<Tuple<ILock, FileInfo>> GetFileLock()
