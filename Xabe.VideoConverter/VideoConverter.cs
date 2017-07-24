@@ -39,30 +39,21 @@ namespace Xabe.VideoConverter
             _percent = e.Percent;
         }
 
-        public async Task<string> Execute()
+        public async Task<bool> Execute()
         {
             var outputPath = "";
             FileInfo file = null;
 
             try
             {
-                ILock fileLock;
-                do
+                Tuple<ILock, FileInfo> tuple = await GetFileLock();
+                ILock fileLock = tuple.Item1;
+                file = tuple.Item2;
+
+                if(fileLock == null)
                 {
-                    if(file != null)
-                    {
-                        _logger.LogWarning($"Cannot create lock for file {file.Name}");
-                    }
-                    file = await _provider.GetNext();
-                    if(file == null)
-                    {
-                        await _provider.Refresh();
-                        return null;
-                    }
-                    fileLock = new FileLock.FileLock(file);
-                } while(!await fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
-
-
+                    return false;
+                }
                 using(fileLock)
                 {
                     _fileName = file.Name;
@@ -71,12 +62,10 @@ namespace Xabe.VideoConverter
                     if(File.Exists(outputPath))
                         File.Delete(outputPath);
 
-                    SaveSourceInfo(file, outputPath);
 
                     if(file.Extension == ".mp4")
                     {
                         File.Move(file.FullName, outputPath);
-                        return outputPath;
                     }
                     else
                     {
@@ -86,11 +75,12 @@ namespace Xabe.VideoConverter
                         }
                     }
 
+                    Task saveSourceInfo = SaveSourceInfo(file, outputPath);
                     Task saveHash = SaveHash(file, outputPath);
                     Task downloadSubtitles = DownloadSubtitles(outputPath, file);
                     Task downloadTrailer = DownloadTrailer(outputPath, file);
 
-                    await Task.WhenAll(saveHash, downloadSubtitles, downloadTrailer);
+                    await Task.WhenAll(saveSourceInfo, saveHash, downloadSubtitles, downloadTrailer);
                     if(_settings.DeleteSource)
                     {
                         file.Delete();
@@ -103,12 +93,36 @@ namespace Xabe.VideoConverter
                 _logger.LogError(e.ToString());
                 if(!string.IsNullOrWhiteSpace(outputPath) &&
                    file != null &&
-                   file.Exists)
+                   File.Exists(file.FullName))
                     File.Delete(outputPath);
-                _iffmpeg.Dispose();
-                return null;
+                return false;
             }
-            return outputPath;
+            finally
+            {
+                _iffmpeg.Dispose();
+            }
+            return true;
+        }
+
+        private async Task<Tuple<ILock, FileInfo>> GetFileLock()
+        {
+            ILock fileLock;
+            FileInfo file = null;
+            do
+            {
+                if(file != null)
+                {
+                    _logger.LogWarning($"Cannot create lock for file {file.Name}");
+                }
+                file = await _provider.GetNext();
+                if(file == null)
+                {
+                    await _provider.Refresh();
+                    return null;
+                }
+                fileLock = new FileLock.FileLock(file);
+            } while(!await fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
+            return new Tuple<ILock, FileInfo>(fileLock, file);
         }
 
         private async Task DownloadTrailer(string outputPath, FileInfo file)
@@ -138,12 +152,12 @@ namespace Xabe.VideoConverter
             await File.WriteAllTextAsync(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
         }
 
-        private void SaveSourceInfo(FileInfo file, string outputPath)
+        private async Task SaveSourceInfo(FileInfo file, string outputPath)
         {
             if(!_settings.SaveSourceInfo)
                 return;
 
-            File.WriteAllText(Path.Combine(new FileInfo(outputPath).Directory.FullName, outputPath.ChangeExtension(".info")), _iffmpeg.GetVideoInfo(file));
+            await File.WriteAllTextAsync(Path.Combine(new FileInfo(outputPath).Directory.FullName, outputPath.ChangeExtension(".info")), _iffmpeg.GetVideoInfo(file));
         }
 
         private string GetOutputPath(FileInfo file)

@@ -33,15 +33,15 @@ namespace Xabe.VideoConverter
 
             while(true)
             {
-                string outputFilePath = null;
-                Task.Run(async () => { outputFilePath = await FormatVideo(services, outputFilePath); })
+                bool conversionResult = false;
+                Task.Run(async () => { conversionResult = await FormatVideo(services); })
                     .Wait();
-                if(outputFilePath == null)
+                if(!conversionResult)
                     Thread.Sleep(TimeSpan.FromMinutes(1));
             }
         }
 
-        private static async Task<string> FormatVideo(ServiceProvider services, string outputFilePath)
+        private static async Task<bool> FormatVideo(ServiceProvider services)
         {
             var videoConverter = services.GetService<VideoConverter>();
             return await videoConverter.Execute();
