@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 using Moq;
@@ -28,7 +29,7 @@ namespace Xabe.VideoConverter.Test
 
             _ffmpeg.Raise(x => x.OnChange += null, EventArgs.Empty);
             _ffmpeg.Setup(x => x.ConvertMedia(It.IsAny<FileInfo>(), It.IsAny<string>()))
-                   .Returns(() => null);
+                   .Returns(Task.FromResult(true));
             _ffmpeg.Setup(x => x.Dispose())
                    .Verifiable();
 
@@ -62,11 +63,10 @@ namespace Xabe.VideoConverter.Test
             _provider.Setup(x => x.GetNext())
                      .ReturnsAsync(new FileInfo(Path.GetTempFileName()));
 
-            _ffmpeg.Setup(x => x.ConvertMedia(It.IsAny<FileInfo>(), It.IsAny<string>()))
-                   .ReturnsAsync(() => true);
-
             var videoConverter = new VideoConverter(_ffmpeg.Object, _settings.Object, _logger.Object, _provider.Object, null);
             string result = await videoConverter.Execute();
+
+            _ffmpeg.VerifyAll();
             Assert.NotNull(result);
         }
 

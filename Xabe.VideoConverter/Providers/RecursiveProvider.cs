@@ -40,17 +40,8 @@ namespace Xabe.VideoConverter.Providers
                     _fileList.TryDequeue(out _currentFile);
                     if(_currentFile != null)
                         _logger.LogInformation($"Dequeue {_currentFile.Name}. Items left: {_fileList.Count}");
-                } while((_currentFile == null || !_currentFile.Exists) && _fileList.Count > 0);
-                return _currentFile;
-            });
-        }
-
-        public async Task Delete()
-        {
-            await Task.Run(() =>
-            {
-                _currentFile.Delete();
-                _logger.LogInformation($"Deleted file {_currentFile.Name}");
+                } while((_currentFile == null || !File.Exists(_currentFile.FullName)) && _fileList.Count > 0);
+                return File.Exists(_currentFile?.FullName) ? _currentFile : null;
             });
         }
 

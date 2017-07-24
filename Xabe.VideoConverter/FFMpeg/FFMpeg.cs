@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Xabe.FFMpeg;
@@ -31,27 +30,18 @@ namespace Xabe.VideoConverter.FFMpeg
 
         public event ChangedEventHandler OnChange = (sender, args) => { };
 
-        public Task<bool> ConvertMedia(FileInfo input, string outputPath)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    var output = new FileInfo(outputPath);
-                    return _ffmpeg.ToMp4(new VideoInfo(input.FullName), output, Speed.Medium, multithread: true);
-                }
-                catch(Exception e)
-                {
-                    _ffmpeg.Stop();
-                    _logger.LogError(e.ToString());
-                    return false;
-                }
-            });
-        }
-
         public string GetVideoInfo(FileInfo file)
         {
             return new VideoInfo(file).ToString();
+        }
+
+        public Task ConvertMedia(FileInfo input, string outputPath)
+        {
+            return Task.Run(() =>
+            {
+                var output = new FileInfo(outputPath);
+                _ffmpeg.ToMp4(new VideoInfo(input.FullName), output, Speed.Medium, multithread: true);
+            });
         }
     }
 }

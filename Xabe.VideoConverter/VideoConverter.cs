@@ -73,12 +73,29 @@ namespace Xabe.VideoConverter
 
                     SaveSourceInfo(file, outputPath);
 
-                    SaveHash(file, outputPath);
-                    DownloadSubtitles(outputPath, file);
-                    DownloadTrailer(outputPath, file);
+                    if(file.Extension == ".mp4")
+                    {
+                        File.Move(file.FullName, outputPath);
+                        return outputPath;
+                    }
+                    else
+                    {
+                        using(_iffmpeg)
+                        {
+                            await _iffmpeg.ConvertMedia(file, outputPath);
+                        }
+                    }
 
-                    _logger.LogInformation($"Start conversion of {_fileName}");
-                    await Convert(outputPath, file);
+                    Task saveHash = SaveHash(file, outputPath);
+                    Task downloadSubtitles = DownloadSubtitles(outputPath, file);
+                    Task downloadTrailer = DownloadTrailer(outputPath, file);
+
+                    await Task.WhenAll(saveHash, downloadSubtitles, downloadTrailer);
+                    if(_settings.DeleteSource)
+                    {
+                        file.Delete();
+                        _logger.LogInformation($"Deleted file {file.Name}");
+                    }
                 }
             }
             catch(Exception e)
@@ -88,6 +105,7 @@ namespace Xabe.VideoConverter
                    file != null &&
                    file.Exists)
                     File.Delete(outputPath);
+                _iffmpeg.Dispose();
                 return null;
             }
             return outputPath;
@@ -118,25 +136,6 @@ namespace Xabe.VideoConverter
             }
             var hash = HashHelper.GetHash(file);
             await File.WriteAllTextAsync(Path.ChangeExtension(outputPath, ".hash"), hash, Encoding.UTF8);
-        }
-
-        private async Task Convert(string outputPath, FileInfo file)
-        {
-            if(file.Extension == ".mp4")
-            {
-                File.Move(file.FullName, outputPath);
-                return;
-            }
-
-            if(!await _iffmpeg.ConvertMedia(file, outputPath))
-            {
-                File.Delete(outputPath);
-                _iffmpeg.Dispose();
-            }
-            else if(_settings.DeleteSource)
-            {
-                await _provider.Delete();
-            }
         }
 
         private void SaveSourceInfo(FileInfo file, string outputPath)

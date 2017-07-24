@@ -11,7 +11,7 @@ namespace Xabe.VideoConverter.FFMpeg
     {
         event ChangedEventHandler OnChange;
 
-        Task<bool> ConvertMedia(FileInfo input, string outputPath);
+        Task ConvertMedia(FileInfo input, string outputPath);
         string GetVideoInfo(FileInfo file);
     }
 }

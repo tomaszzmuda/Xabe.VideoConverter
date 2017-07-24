@@ -7,6 +7,5 @@ namespace Xabe.VideoConverter.Providers
     {
         Task<FileInfo> GetNext();
         Task Refresh();
-        Task Delete();
     }
 }

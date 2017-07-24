@@ -74,18 +74,17 @@ namespace Xabe.VideoConverter.Test
         [Fact]
         public async void GetNextWithDelete()
         {
-            string tmpFilePath = Path.Combine(_tempDir, Path.ChangeExtension(Path.GetRandomFileName(), Extension));
-            File.Create(tmpFilePath)
+            string tmpFilePathA = Path.Combine(_tempDir, Path.ChangeExtension("a" + Path.GetRandomFileName(), Extension));
+            File.Create(tmpFilePathA)
                 .Close();
-            tmpFilePath = Path.Combine(_tempDir, Path.ChangeExtension(Path.GetRandomFileName(), Extension));
-            File.Create(tmpFilePath)
+            var tmpFilePathB = Path.Combine(_tempDir, Path.ChangeExtension("b" + Path.GetRandomFileName(), Extension));
+            File.Create(tmpFilePathB)
                 .Close();
 
             var recursiveProvider = new RecursiveProvider(_settings.Object, _logger.Object);
+            File.Delete(tmpFilePathA);
 
-            FileInfo nextFile = await recursiveProvider.GetNext();
-            nextFile.Delete();
-            nextFile = await recursiveProvider.GetNext();
+            var nextFile = await recursiveProvider.GetNext();
 
             Assert.NotNull(nextFile);
         }
