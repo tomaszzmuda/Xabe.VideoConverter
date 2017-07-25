@@ -107,7 +107,7 @@ namespace Xabe.VideoConverter
 
         private async Task<Tuple<ILock, FileInfo>> GetFileLock()
         {
-            ILock fileLock;
+            ILock fileLock = null;
             FileInfo file = null;
             do
             {
@@ -117,7 +117,7 @@ namespace Xabe.VideoConverter
                 if(file == null)
                 {
                     await _provider.Refresh();
-                    return null;
+                    break;
                 }
                 fileLock = new FileLock.FileLock(file);
             } while(!await fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
