@@ -7,9 +7,8 @@ before_install:
   - sudo apt-get install zip -y
 deploy:
   provider: releases
-  user: $GITHUB_USER
-  password: $GITHUB_PASSWORD
-  file: "Xabe.VideoConverter/Xabe.VideoConverter.zip"
+  api_key: $GITHUB_APIKEY
+  file: Xabe.VideoConverter/Xabe.VideoConverter.zip
   skip_cleanup: true
   on:
     tags: true
