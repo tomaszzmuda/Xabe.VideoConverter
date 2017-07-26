@@ -2,5 +2,7 @@ language: csharp
 mono: none
 dotnet: 2.0.0
 dist: trusty
+before_install:
+  - sudo apt-get install zip sshpass -y
 script:
  - ./build.sh
