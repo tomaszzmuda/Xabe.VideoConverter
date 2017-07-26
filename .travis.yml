@@ -3,13 +3,9 @@ mono: none
 dotnet: 2.0.0
 dist: trusty
 sudo: true
-addons:
-  apt:
-    packages:
-    - sshpass
 before_install:
   - sudo apt-get install zip -y
- deploy:
+deploy:
   provider: releases
   user: $GITHUB_USER
   password: $GITHUB_PASSWORD
