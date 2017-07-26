@@ -8,5 +8,5 @@ else
 	dotnet clean -c Release
 	dotnet publish -c Release /property:Version=$TRAVIS_TAG -o VideoConverter
 	zip -r VideoConverter$TRAVIS_TAG.zip VideoConverter/*
-	/usr/bin/sshpass -p $SSH_PASSWORD scp VideoConverter$TRAVIS_TAG.zip $SSH_USER@$SSH_HOST:~/VideoConverter/VideoConverter$TRAVIS_TAG.zip
+	sshpass -p $SSH_PASSWORD scp VideoConverter$TRAVIS_TAG.zip $SSH_USER@$SSH_HOST:~/VideoConverter/VideoConverter$TRAVIS_TAG.zip
 fi
