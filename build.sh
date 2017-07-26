@@ -7,5 +7,6 @@ else
 	cd Xabe.VideoConverter
 	dotnet clean -c Release
 	dotnet publish -c Release /property:Version=$TRAVIS_TAG -o Xabe.VideoConverter
+	cp settings.json Xabe.VideoConverter/
 	zip -r Xabe.VideoConverter.zip Xabe.VideoConverter/*
 fi
