@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26608.5
+VisualStudioVersion = 15.0.26720.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xabe.VideoConverter.Test", "Xabe.VideoConverter.Test\Xabe.VideoConverter.Test.csproj", "{F7E9F369-14A2-4EC3-B3FC-BF0F3415D675}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xabe.VideoConverter", "Xabe.VideoConverter\Xabe.VideoConverter.csproj", "{C06D84BD-D7B9-45FD-B60E-15D2F3EE10E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xabe.AutoUpdater", "Xabe.AutoUpdater\Xabe.AutoUpdater.csproj", "{A533EDBD-C854-47B2-87CD-BFC3E41C4412}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{C06D84BD-D7B9-45FD-B60E-15D2F3EE10E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C06D84BD-D7B9-45FD-B60E-15D2F3EE10E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C06D84BD-D7B9-45FD-B60E-15D2F3EE10E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A533EDBD-C854-47B2-87CD-BFC3E41C4412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A533EDBD-C854-47B2-87CD-BFC3E41C4412}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A533EDBD-C854-47B2-87CD-BFC3E41C4412}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A533EDBD-C854-47B2-87CD-BFC3E41C4412}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBA1DFC9-7D33-4EB5-98B3-34DF45278AFA}
 	EndGlobalSection
 EndGlobal

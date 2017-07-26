@@ -35,4 +35,8 @@
     <PackageReference Include="YoutubeExtractor" Version="0.10.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Xabe.AutoUpdater\Xabe.AutoUpdater.csproj" />
+  </ItemGroup>
+
 </Project>

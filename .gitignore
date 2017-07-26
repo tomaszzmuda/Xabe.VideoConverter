@@ -11,3 +11,5 @@
 /.vs/config/applicationhost.config
 /.vs/Xabe.VideoConverter/v15/sqlite3
 /Xabe.VideoConverter/bin/Release/netcoreapp2.0
+/Xabe.AutoUpdater/obj
+/Xabe.AutoUpdater/bin/Debug/netcoreapp2.0

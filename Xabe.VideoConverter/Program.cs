@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Xabe.AutoUpdater;
 using Xabe.VideoConverter.FFMpeg;
 using Xabe.VideoConverter.Providers;
 
@@ -31,8 +32,14 @@ namespace Xabe.VideoConverter
             var loggerFactory = services.GetService<ILoggerFactory>();
             Logger.Init(loggerFactory, _settings);
 
+            var updater = new Updater<Update>();
+
             while(true)
             {
+                if(updater.CheckForUpdate())
+                {
+                    updater.Update();
+                }
                 var conversionResult = false;
                 try
                 {
