@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Xabe.AutoUpdater
 {
     public interface IUpdate
     {
-        string GetCurrentVersion();
-        string GetInstalledVersion();
-        List<string> DownloadCurrentVersion();
+        Task<string> GetCurrentVersion();
+        Task<string> GetInstalledVersion();
+        Task<List<string>> DownloadCurrentVersion();
         void RestartApp();
     }
 }

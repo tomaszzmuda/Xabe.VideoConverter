@@ -26,17 +26,19 @@ namespace Xabe.VideoConverter
                 .AddSingleton<IFFMpeg, FFMpeg.FFMpeg>()
                 .AddTransient<IFileProvider, RecursiveProvider>()
                 .AddTransient<TrailerDownloader>()
+                .AddTransient<Update>()
                 .AddLogging()
                 .BuildServiceProvider();
 
             var loggerFactory = services.GetService<ILoggerFactory>();
             Logger.Init(loggerFactory, _settings);
 
-            var updater = new Updater<Update>();
+            var updater = new Updater(services.GetService<Update>());
 
             while(true)
             {
-                if(updater.CheckForUpdate())
+                if(updater.CheckForUpdate()
+                          .Result)
                 {
                     updater.Update();
                 }
