@@ -21,7 +21,7 @@ namespace Xabe.VideoConverter
         }
 
         /// <inheritdoc />
-        public async Task<string> GetLatestVersionNumber()
+        public async Task<string> GetCurrentVersion()
         {
             _logger.LogInformation("Getting current version number.");
             var client = new GitHubClient(new ProductHeaderValue("Xabe.VideoConverter"));
@@ -32,7 +32,7 @@ namespace Xabe.VideoConverter
         }
 
         /// <inheritdoc />
-        public async Task<string> GetInstalledVersionNumber()
+        public async Task<string> GetInstalledVersion()
         {
             Version version = Assembly.GetEntryAssembly()
                                       .GetName()
@@ -43,7 +43,7 @@ namespace Xabe.VideoConverter
         }
 
         /// <inheritdoc />
-        public async Task<List<string>> DownloadLatestVersion()
+        public async Task<List<string>> DownloadCurrentVersion()
         {
             _logger.LogInformation("Downloading latest version.");
             var client = new GitHubClient(new ProductHeaderValue("Xabe.VideoConverter"));
