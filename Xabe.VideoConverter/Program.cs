@@ -48,7 +48,7 @@ namespace Xabe.VideoConverter
                     Task.Run(async () =>
                     {
                         var videoConverter = services.GetService<VideoConverter>();
-                        return await videoConverter.Execute();
+                        conversionResult = await videoConverter.Execute();
                     })
                         .Wait();
                 }
