@@ -16,6 +16,7 @@ namespace Xabe.VideoConverter
     {
         private readonly ILogger<Update> _logger;
         private JObject _oldSettings;
+        private string[] _downloadedFiles;
 
         public Update(ILogger<Update> logger)
         {
@@ -56,7 +57,7 @@ namespace Xabe.VideoConverter
 
         private void UpdateSettings()
         {
-            JObject newSettings = JObject.Parse(File.ReadAllText("settings.json"));
+            JObject newSettings = JObject.Parse(File.ReadAllText(_downloadedFiles.First(x => x.Contains("settings.json"))));
             foreach(var setting in newSettings)
             {
                 try
@@ -64,7 +65,9 @@ namespace Xabe.VideoConverter
                     var value = _oldSettings[setting.Key].Value<dynamic>();
                     newSettings[setting.Key] = value;
                 }
-                catch(Exception) { }
+                catch(Exception)
+                {
+                }
             }
             File.WriteAllText("settings.json", newSettings.ToString());
         }
@@ -87,9 +90,9 @@ namespace Xabe.VideoConverter
                                                                  .ToString());
             System.IO.Compression.ZipFile.ExtractToDirectory(tempFile, outputDir);
 
-            var files = Directory.GetFiles(outputDir, "*", SearchOption.AllDirectories);
+            _downloadedFiles = Directory.GetFiles(outputDir, "*", SearchOption.AllDirectories);
 
-            return files.Where(x => !x.Contains("settings.json"))
+            return _downloadedFiles.Where(x => !x.Contains("settings.json"))
                         .ToList();
         }
     }
