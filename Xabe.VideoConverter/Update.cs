@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using Octokit;
 using Xabe.AutoUpdater;
 
@@ -14,6 +15,7 @@ namespace Xabe.VideoConverter
     internal class Update: IUpdate
     {
         private readonly ILogger<Update> _logger;
+        private JObject _oldSettings;
 
         public Update(ILogger<Update> logger)
         {
@@ -43,8 +45,34 @@ namespace Xabe.VideoConverter
         }
 
         /// <inheritdoc />
+        public void RestartApp()
+        {
+            UpdateSettings();
+            _logger.LogInformation("Restarting app.");
+            var args = Environment.GetCommandLineArgs();
+            System.Diagnostics.Process.Start("dotnet ", string.Join(' ', args));
+            Environment.Exit(0);
+        }
+
+        private void UpdateSettings()
+        {
+            JObject newSettings = JObject.Parse(File.ReadAllText("settings.json"));
+            foreach(var setting in newSettings)
+            {
+                try
+                {
+                    var value = _oldSettings[setting.Key].Value<dynamic>();
+                    newSettings[setting.Key] = value;
+                }
+                catch(Exception) { }
+            }
+            File.WriteAllText("settings.json", newSettings.ToString());
+        }
+
+        /// <inheritdoc />
         public async Task<List<string>> DownloadCurrentVersion()
         {
+            _oldSettings = JObject.Parse(File.ReadAllText("settings.json"));
             _logger.LogInformation("Downloading latest version.");
             var client = new GitHubClient(new ProductHeaderValue("Xabe.VideoConverter"));
             var releases = await client.Repository.Release.GetAll("tomaszzmuda", "Xabe.VideoConverter");
@@ -60,16 +88,9 @@ namespace Xabe.VideoConverter
             System.IO.Compression.ZipFile.ExtractToDirectory(tempFile, outputDir);
 
             var files = Directory.GetFiles(outputDir, "*", SearchOption.AllDirectories);
-            return files.ToList();
-        }
 
-        /// <inheritdoc />
-        public void RestartApp()
-        {
-            _logger.LogInformation("Restarting app.");
-            var args = Environment.GetCommandLineArgs();
-            System.Diagnostics.Process.Start("dotnet ", string.Join(' ', args));
-            Environment.Exit(0);
+            return files.Where(x => !x.Contains("settings.json"))
+                        .ToList();
         }
     }
 }
