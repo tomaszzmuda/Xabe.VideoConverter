@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -51,7 +52,17 @@ namespace Xabe.VideoConverter
             UpdateSettings();
             _logger.LogInformation("Restarting app.");
             var args = Environment.GetCommandLineArgs();
-            System.Diagnostics.Process.Start("dotnet ", string.Join(' ', args));
+            var process = new System.Diagnostics.Process()
+            {
+                StartInfo = new ProcessStartInfo()
+                {
+                    Arguments = string.Join(' ', args),
+                    FileName = "dotnet",
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+            process.Start();
             Environment.Exit(0);
         }
 
