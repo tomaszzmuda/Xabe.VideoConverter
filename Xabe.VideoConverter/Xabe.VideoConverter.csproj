@@ -19,22 +19,24 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.28.0.760" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0-preview1-final" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
     <PackageReference Include="Octokit" Version="0.24.0" />
     <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
     <PackageReference Include="Xabe.AutoUpdater" Version="1.1.0" />
     <PackageReference Include="Xabe.FFMpeg" Version="1.0.10" />
-    <PackageReference Include="Xabe.FileLock" Version="1.4.3" />
+    <PackageReference Include="Xabe.FileLock" Version="1.5.0" />
     <PackageReference Include="YoutubeExtractor" Version="0.10.11" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties settings_1json__JSONSchema="1" /></VisualStudio></ProjectExtensions>
 
 </Project>

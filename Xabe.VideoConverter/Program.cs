@@ -24,39 +24,47 @@ namespace Xabe.VideoConverter
                 .AddSingleton<ISettings>(_settings)
                 .AddSingleton<VideoConverter>()
                 .AddSingleton<IFFMpeg, FFMpeg.FFMpeg>()
+                .AddSingleton<Updater>()
+                .AddSingleton<IUpdate, Update>()
                 .AddTransient<IFileProvider, RecursiveProvider>()
                 .AddTransient<TrailerDownloader>()
-                .AddTransient<Update>()
                 .AddLogging()
                 .BuildServiceProvider();
 
             var loggerFactory = services.GetService<ILoggerFactory>();
             Logger.Init(loggerFactory, _settings);
 
-            var updater = new Updater(services.GetService<Update>());
+            var updater = services.GetService<Updater>();
+            var settings = services.GetService<ISettings>();
 
             while(true)
             {
-                if(updater.CheckForUpdate()
-                          .Result)
-                {
-                    updater.Update();
-                }
-                var conversionResult = false;
-                try
-                {
-                    Task.Run(async () =>
-                    {
-                        var videoConverter = services.GetService<VideoConverter>();
-                        conversionResult = await videoConverter.Execute();
-                    })
-                        .Wait();
-                }
-                catch(Exception)
-                {
-                }
-                if(!conversionResult)
-                    Thread.Sleep(TimeSpan.FromMinutes(1));
+                CheckForUpdate(updater, settings);
+                ConvertVideo(services);
+            }
+        }
+
+        private static void ConvertVideo(ServiceProvider services)
+        {
+            var conversionResult = false;
+            try
+            {
+                var videoConverter = services.GetService<VideoConverter>();
+                conversionResult = videoConverter.Execute().Result;
+            }
+            catch (Exception)
+            {
+            }
+            if (!conversionResult)
+                Thread.Sleep(TimeSpan.FromMinutes(1));
+        }
+
+        private static void CheckForUpdate(Updater updater, ISettings settings)
+        {
+            if (settings.autoUpdate && updater.CheckForUpdate()
+                      .Result)
+            {
+                updater.Update();
             }
         }
     }
