@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using Xabe.AutoUpdater;
 using Xabe.VideoConverter.FFMpeg;
 using Xabe.VideoConverter.Providers;
@@ -24,8 +27,6 @@ namespace Xabe.VideoConverter
                 .AddSingleton<ISettings>(_settings)
                 .AddSingleton<VideoConverter>()
                 .AddSingleton<IFFMpeg, FFMpeg.FFMpeg>()
-                .AddSingleton<Updater>()
-                .AddSingleton<IUpdate, Update>()
                 .AddTransient<IFileProvider, RecursiveProvider>()
                 .AddTransient<TrailerDownloader>()
                 .AddLogging()
@@ -33,8 +34,8 @@ namespace Xabe.VideoConverter
 
             var loggerFactory = services.GetService<ILoggerFactory>();
             Logger.Init(loggerFactory, _settings);
+            var updater = new Updater();
 
-            var updater = services.GetService<Updater>();
             var settings = services.GetService<ISettings>();
 
             while(true)
@@ -61,7 +62,7 @@ namespace Xabe.VideoConverter
 
         private static void CheckForUpdate(Updater updater, ISettings settings)
         {
-            if (settings.autoUpdate && updater.CheckForUpdate()
+            if (settings.autoUpdate && updater.IsUpdateAvaiable()
                       .Result)
             {
                 updater.Update();
