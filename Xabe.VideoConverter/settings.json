@@ -1,6 +1,12 @@
-﻿{
-  "extensions": [ ".avi", ".mkv", ".mp4"  ],
-  "inputs": [ "\\\\willow\\storage\\apps\\Torrents" ],
+{
+  "extensions": [
+    ".avi",
+    ".mkv",
+    ".mp4"
+  ],
+  "inputs": [
+    "\\\\willow\\storage\\apps\\Torrents"
+  ],
   "log": {
     "errorPath": "\\\\willow\\storage\\tmp\\videoconverter\\",
     "infoPath": "\\\\willow\\storage\\tmp\\videoconverter\\"
@@ -10,10 +16,11 @@
   "usePaths": "true",
   "moviesPath": "\\\\willow\\storage\\Movies",
   "serialsPath": "\\\\willow\\storage\\Serials",
-  "youtubeApiKey": "AIzaSyB6IJ4SJas0mkO907o7fMUOgqNSE3pOw1E",
+  "youtubeApiKey": "",
   "downloadTrailers": "true",
   "saveSourceInfo": "true",
   "createHash": "true",
-  "downloadSubtitles":  "true" ,
-  "ffmpegPath": ""
+  "downloadSubtitles": "true",
+  "ffmpegPath": "",
+  "autoUpdate": "true"
 }

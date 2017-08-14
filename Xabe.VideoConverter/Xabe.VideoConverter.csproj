@@ -31,13 +31,10 @@
     <PackageReference Include="Octokit" Version="0.24.0" />
     <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
+    <PackageReference Include="Xabe.AutoUpdater" Version="1.2.0" />
     <PackageReference Include="Xabe.FFMpeg" Version="1.0.10" />
     <PackageReference Include="Xabe.FileLock" Version="1.5.0" />
     <PackageReference Include="YoutubeExtractor" Version="0.10.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Xabe.AutoUpdater\Xabe.AutoUpdater\Xabe.AutoUpdater.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties settings_1json__JSONSchema="1" /></VisualStudio></ProjectExtensions>
