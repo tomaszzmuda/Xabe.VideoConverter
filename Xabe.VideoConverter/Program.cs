@@ -15,34 +15,38 @@ namespace Xabe.VideoConverter
 {
     internal static class Program
     {
-        private static Settings _settings;
-
         public static void Main(string[] args)
         {
-            _settings = Configuration.GetConfiguration()
+            ServiceProvider services = InitalizeServices();
+
+            var settings = services.GetService<ISettings>();
+            var loggerFactory = services.GetService<ILoggerFactory>();
+            Logger.Init(loggerFactory, settings);
+
+            var updater = services.GetService<Updater>();
+
+            while (true)
+            {
+                CheckForUpdate(updater, settings);
+                ConvertVideo(services);
+            }
+        }
+
+        private static ServiceProvider InitalizeServices()
+        {
+            var settings = Configuration.GetConfiguration()
                                      .Get<Settings>();
 
-            ServiceProvider services = new ServiceCollection()
+            return new ServiceCollection()
                 .AddSingleton<Configuration, Configuration>()
-                .AddSingleton<ISettings>(_settings)
+                .AddSingleton<ISettings>(settings)
                 .AddSingleton<VideoConverter>()
+                .AddSingleton<Updater>()
                 .AddSingleton<IFFMpeg, FFMpeg.FFMpeg>()
                 .AddTransient<IFileProvider, RecursiveProvider>()
                 .AddTransient<TrailerDownloader>()
                 .AddLogging()
                 .BuildServiceProvider();
-
-            var loggerFactory = services.GetService<ILoggerFactory>();
-            Logger.Init(loggerFactory, _settings);
-            var updater = new Updater();
-
-            var settings = services.GetService<ISettings>();
-
-            while(true)
-            {
-                CheckForUpdate(updater, settings);
-                ConvertVideo(services);
-            }
         }
 
         private static void ConvertVideo(ServiceProvider services)
