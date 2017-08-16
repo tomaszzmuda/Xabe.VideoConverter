@@ -8,8 +8,8 @@ namespace Xabe.VideoConverter.FFMpeg
 {
     public class FFMpeg: IFFMpeg
     {
-        private readonly Xabe.FFMpeg.FFMpeg _ffmpeg;
         private readonly ILogger<FFMpeg> _logger;
+        private VideoInfo _currentVideo;
 
         public FFMpeg(ILogger<FFMpeg> logger, ISettings settings)
         {
@@ -17,13 +17,11 @@ namespace Xabe.VideoConverter.FFMpeg
                 FFBase.FFMpegDir = settings.ffmpegPath;
 
             _logger = logger;
-            _ffmpeg = new Xabe.FFMpeg.FFMpeg();
-            _ffmpeg.OnProgress += (duration, totalLength) => OnChange(this, new ConvertProgressEventArgs(duration, totalLength));
         }
 
         public void Dispose()
         {
-            _ffmpeg.Stop();
+            _currentVideo?.Dispose();
         }
 
         public event ChangedEventHandler OnChange = (sender, args) => { };
@@ -37,8 +35,9 @@ namespace Xabe.VideoConverter.FFMpeg
         {
             return Task.Run(() =>
             {
-                var output = new FileInfo(outputPath);
-                _ffmpeg.ToMp4(new VideoInfo(input.FullName), output, Speed.Medium, multithread: true);
+                _currentVideo = new VideoInfo(input);
+                _currentVideo.OnConversionProgress += (duration, totalLength) => OnChange(this, new ConvertProgressEventArgs(duration, totalLength));
+                _currentVideo.ToMp4(outputPath, Speed.Medium, multithread: true);
             });
         }
     }
