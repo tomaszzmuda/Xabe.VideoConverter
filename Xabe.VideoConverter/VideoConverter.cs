@@ -83,9 +83,14 @@ namespace Xabe.VideoConverter
 
 
             if(file.Extension == ".mp4")
+            {
                 File.Move(file.FullName, outputPath);
+                file = new FileInfo(outputPath);
+            }
             else
-                using(_iffmpeg)
+                using
+
+                    (_iffmpeg)
                 {
                     await _iffmpeg.ConvertMedia(file, outputPath);
                 }
