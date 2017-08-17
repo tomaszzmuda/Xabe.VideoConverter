@@ -9,7 +9,7 @@ namespace Xabe.VideoConverter.FFMpeg
     public class FFMpeg: IFFMpeg
     {
         private readonly ILogger<FFMpeg> _logger;
-        private VideoInfo _currentVideo;
+        private IVideoInfo _currentVideo;
 
         public FFMpeg(ILogger<FFMpeg> logger, ISettings settings)
         {
