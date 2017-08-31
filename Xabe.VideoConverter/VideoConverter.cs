@@ -101,7 +101,7 @@ namespace Xabe.VideoConverter
             Task downloadTrailer = DownloadTrailer(outputPath, file);
 
             await Task.WhenAll(saveSourceInfo, saveHash, downloadSubtitles, downloadTrailer);
-            if(_settings.DeleteSource)
+            if(_settings.DeleteSource && outputPath != file.FullName)
             {
                 file.Delete();
                 _logger.LogInformation($"Deleted file {file.Name}");
