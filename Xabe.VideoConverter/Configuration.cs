@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 
 namespace Xabe.VideoConverter
 {
+    [UsedImplicitly]
     public class Configuration
     {
         private Configuration()
@@ -38,10 +40,11 @@ namespace Xabe.VideoConverter
         bool SaveSourceInfo { get; set; }
         bool CreateHash { get; set; }
         bool DownloadSubtitles { get; set; }
-        string ffmpegPath { get; set; }
-        bool autoUpdate { get; set; }
+        string FFMpegPath { get; set; }
+        bool AutoUpdate { get; set; }
     }
 
+    [UsedImplicitly]
     public class Settings: ISettings
     {
         public string[] Extensions { get; set; }
@@ -57,10 +60,11 @@ namespace Xabe.VideoConverter
         public bool SaveSourceInfo { get; set; }
         public bool CreateHash { get; set; }
         public bool DownloadSubtitles { get; set; }
-        public string ffmpegPath { get; set; }
-        public bool autoUpdate { get; set; }
+        public string FFMpegPath { get; set; }
+        public bool AutoUpdate { get; set; }
     }
 
+    [UsedImplicitly]
     public class Log
     {
         public string ErrorPath { get; set; }

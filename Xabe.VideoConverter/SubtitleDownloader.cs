@@ -7,7 +7,7 @@ using RestResponse = RestSharp.RestResponse;
 
 namespace Xabe.VideoConverter
 {
-    internal class SubtitleDownloader
+    internal abstract class SubtitleDownloader
     {
         public static async Task SaveSubtitles(FileInfo file, string outputPath)
         {
@@ -29,7 +29,7 @@ namespace Xabe.VideoConverter
         public static async Task<RestResponse> ExecuteAsync(this RestClient client, RestRequest request)
         {
             var taskCompletion = new TaskCompletionSource<IRestResponse>();
-            RestRequestAsyncHandle handle = client.ExecuteAsync(request, r => taskCompletion.SetResult(r));
+            client.ExecuteAsync(request, r => taskCompletion.SetResult(r));
             return (RestResponse) await taskCompletion.Task;
         }
     }

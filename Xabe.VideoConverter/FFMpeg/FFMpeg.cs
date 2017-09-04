@@ -1,27 +1,41 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using JetBrains.Annotations;
 using Xabe.FFMpeg;
-using Xabe.FFMpeg.Enums;
 
 namespace Xabe.VideoConverter.FFMpeg
 {
+    [UsedImplicitly]
     public class FFMpeg: IFFMpeg
     {
-        private readonly ILogger<FFMpeg> _logger;
-        private IVideoInfo _currentVideo;
+        private IConversion _conversion;
+        private readonly object _conversionLock = new object();
 
-        public FFMpeg(ILogger<FFMpeg> logger, ISettings settings)
+        private IConversion Conversion
         {
-            if(!string.IsNullOrWhiteSpace(settings.ffmpegPath))
-                FFBase.FFMpegDir = settings.ffmpegPath;
+            get
+            {
+                lock(_conversionLock)
+                {
+                    if(_conversion == null)
+                    {
+                        _conversion = ConversionHelper.ToMp4("", "", multithread: true);   
+                        _conversion.OnProgress += (duration, totalLength) => OnChange(this, new ConvertProgressEventArgs(duration, totalLength));
+                    }
+                    return _conversion;
+                }
+            }
+        }
 
-            _logger = logger;
+        public FFMpeg(ISettings settings)
+        {
+            if(!string.IsNullOrWhiteSpace(settings.FFMpegPath))
+                FFBase.FFMpegDir = settings.FFMpegPath;
         }
 
         public void Dispose()
         {
-            _currentVideo?.Dispose();
+            _conversion?.Dispose();
         }
 
         public event ChangedEventHandler OnChange = (sender, args) => { };
@@ -31,14 +45,11 @@ namespace Xabe.VideoConverter.FFMpeg
             return new VideoInfo(file).ToString();
         }
 
-        public Task ConvertMedia(FileInfo input, string outputPath)
+        public async Task ConvertMedia(FileInfo input, string outputPath)
         {
-            return Task.Run(() =>
-            {
-                _currentVideo = new VideoInfo(input);
-                _currentVideo.OnConversionProgress += (duration, totalLength) => OnChange(this, new ConvertProgressEventArgs(duration, totalLength));
-                _currentVideo.ToMp4(outputPath, Speed.Medium, multithread: true);
-            });
+            await Conversion.SetInput(input)
+                       .SetOutput(outputPath)
+                       .Start();
         }
     }
 }

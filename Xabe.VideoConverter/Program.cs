@@ -1,13 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
-using Xabe.AutoUpdater;
 using Xabe.VideoConverter.FFMpeg;
 using Xabe.VideoConverter.Providers;
 
@@ -30,6 +25,7 @@ namespace Xabe.VideoConverter
                 CheckForUpdate(updater, settings);
                 ConvertVideo(services);
             }
+            // ReSharper disable once FunctionNeverReturns
         }
 
         private static ServiceProvider InitalizeServices()
@@ -57,7 +53,8 @@ namespace Xabe.VideoConverter
                 var videoConverter = services.GetService<VideoConverter>();
                 conversionResult = videoConverter.Execute().Result;
             }
-            catch (Exception)
+                // ReSharper disable once EmptyGeneralCatchClause
+            catch
             {
             }
             if (!conversionResult)
@@ -66,7 +63,7 @@ namespace Xabe.VideoConverter
 
         private static void CheckForUpdate(Updater updater, ISettings settings)
         {
-            if (settings.autoUpdate && updater.IsUpdateAvaiable()
+            if (settings.AutoUpdate && updater.IsUpdateAvaiable()
                       .Result)
             {
                 updater.Update();

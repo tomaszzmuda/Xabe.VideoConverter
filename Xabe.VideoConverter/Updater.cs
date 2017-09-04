@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -59,8 +57,9 @@ namespace Xabe.VideoConverter
                     var value = _oldSettings[setting.Key].Value<dynamic>();
                     newSettings[setting.Key] = value;
                 }
-                catch (Exception)
+                catch(Exception)
                 {
+                    // ignored
                 }
             }
             File.WriteAllText("settings.json", newSettings.ToString());

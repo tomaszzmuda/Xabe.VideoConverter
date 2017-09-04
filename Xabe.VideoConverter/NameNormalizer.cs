@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace Xabe.VideoConverter
 {
-    public class NameNormalizer
+    public abstract class NameNormalizer
     {
-        private static readonly string[] escapeChars = {"[", "]", "{", @"}"};
+        private static readonly string[] _escapeChars = {"[", "]", "{", @"}"};
 
         public static string GetNormalizedName(string name)
         {
@@ -34,7 +34,7 @@ namespace Xabe.VideoConverter
 
         private static bool HasEscapeChars(string word)
         {
-            foreach(string character in escapeChars)
+            foreach(string character in _escapeChars)
                 if(word.Contains(character))
                     return true;
             return false;
