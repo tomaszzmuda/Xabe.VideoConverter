@@ -20,7 +20,7 @@ namespace Xabe.VideoConverter
                 .AddCommandLine(Environment.GetCommandLineArgs()
                                            .Skip(1)
                                            .ToArray())
-                .SetBasePath(Assembly.GetEntryAssembly().Location)
+                .SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))
                 .AddJsonFile("settings.json", false, true)
                 .Build();
         }
