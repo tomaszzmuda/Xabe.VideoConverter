@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 
@@ -19,8 +20,8 @@ namespace Xabe.VideoConverter
                 .AddCommandLine(Environment.GetCommandLineArgs()
                                            .Skip(1)
                                            .ToArray())
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("settings.json")
+                .SetBasePath(Assembly.GetEntryAssembly().Location)
+                .AddJsonFile("settings.json", false, true)
                 .Build();
         }
     }
