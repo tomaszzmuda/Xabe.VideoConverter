@@ -1,7 +1,8 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Xabe.FFMpeg;
+using Xabe.FFmpeg;
 
 namespace Xabe.VideoConverter.FFMpeg
 {
@@ -10,6 +11,7 @@ namespace Xabe.VideoConverter.FFMpeg
     {
         private IConversion _conversion;
         private readonly object _conversionLock = new object();
+        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         private IConversion Conversion
         {
@@ -30,12 +32,12 @@ namespace Xabe.VideoConverter.FFMpeg
         public FFMpeg(ISettings settings)
         {
             if(!string.IsNullOrWhiteSpace(settings.FFMpegPath))
-                FFBase.FFMpegDir = settings.FFMpegPath;
+                FFbase.FFmpegDir = settings.FFMpegPath;
         }
 
         public void Dispose()
         {
-            _conversion?.Dispose();
+            cancellationTokenSource.Cancel();
         }
 
         public event ChangedEventHandler OnChange = (sender, args) => { };
@@ -49,7 +51,7 @@ namespace Xabe.VideoConverter.FFMpeg
         {
             await Conversion.SetInput(input)
                        .SetOutput(outputPath)
-                       .Start();
+                       .Start(cancellationTokenSource.Token);
         }
     }
 }
