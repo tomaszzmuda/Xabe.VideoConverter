@@ -24,7 +24,7 @@ namespace Xabe.VideoConverter
                 }
                 if(HasEscapeChars(word))
                     continue;
-                outputName += $"{word} ";
+                outputName += $"{word.FirstCharToUpper()} ";
                 if(!string.IsNullOrEmpty(word) &&
                    (IsYear(word) || word.IsTvShow()))
                     break;

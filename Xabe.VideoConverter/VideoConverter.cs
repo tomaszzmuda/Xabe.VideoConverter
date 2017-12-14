@@ -46,8 +46,8 @@ namespace Xabe.VideoConverter
 
             try
             {
-                Tuple<ILock, FileInfo> tuple = await GetFileLock();
-                ILock fileLock = tuple.Item1;
+                (ILock fileLock, FileInfo file) tuple = await GetFileLock();
+                ILock fileLock = tuple.fileLock;
                 file = tuple.Item2;
 
                 if(fileLock == null)
@@ -110,7 +110,7 @@ namespace Xabe.VideoConverter
             return outputPath;
         }
 
-        private async Task<Tuple<ILock, FileInfo>> GetFileLock()
+        private async Task<(ILock fileLock, FileInfo file)> GetFileLock()
         {
             ILock fileLock = null;
             FileInfo file = null;
@@ -126,7 +126,7 @@ namespace Xabe.VideoConverter
                 }
                 fileLock = new FileLock.FileLock(file);
             } while(!await fileLock.TryAcquire(TimeSpan.FromMinutes(15), true));
-            return new Tuple<ILock, FileInfo>(fileLock, file);
+            return (fileLock, file);
         }
 
         private async Task DownloadTrailer(string outputPath, FileInfo file)
@@ -163,7 +163,7 @@ namespace Xabe.VideoConverter
             var outputDir = "";
             if(_settings.UsePaths)
                 if(file.IsTvShow())
-                    outputDir = Path.Combine(_settings.SerialsPath, $"{file.GetNormalizedName() .RemoveTvShowInfo()}", $"Season {file.GetNormalizedName() .GetSeason()}");
+                    outputDir = Path.Combine(_settings.SerialsPath, $"{file.GetNormalizedName().RemoveTvShowInfo()}", $"Season {file.GetNormalizedName() .GetSeason()}");
                 else
                     outputDir = Path.Combine(_settings.MoviesPath, $"{file.GetNormalizedName()}");
             else

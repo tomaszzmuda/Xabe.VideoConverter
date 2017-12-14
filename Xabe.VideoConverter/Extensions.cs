@@ -45,6 +45,11 @@ namespace Xabe.VideoConverter
             return NameNormalizer.GetNormalizedName(name);
         }
 
+        public static string FirstCharToUpper(this string input)
+        {
+            return input.First().ToString().ToUpper() + input.Substring(1);
+        }
+
         public static string ChangeExtension(this FileInfo file, string extension = ".mp4")
         {
             return file.Name.ChangeExtension(extension);
