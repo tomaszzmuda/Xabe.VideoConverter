@@ -1,12 +1,10 @@
 ﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Xabe.FFmpeg;
 
 namespace Xabe.VideoConverter.FFMpeg
 {
-    [UsedImplicitly]
     public class FFMpeg: IFFMpeg
     {
         private IConversion _conversion;

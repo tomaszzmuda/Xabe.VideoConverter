@@ -24,7 +24,7 @@ namespace Xabe.VideoConverter
             _updater.CheckedInstalledVersionNumber += _updater_CheckedInstalledVersionNumber;
         }
 
-        private void _updater_CheckedInstalledVersionNumber(object sender, Version version)
+        private void _updater_CheckedInstalledVersionNumber(object sender, Version version) 
         {
             _logger.LogInformation($"Installed version number {version}");
         }

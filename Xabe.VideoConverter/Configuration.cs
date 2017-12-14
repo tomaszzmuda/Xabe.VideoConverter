@@ -2,12 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 
 namespace Xabe.VideoConverter
 {
-    [UsedImplicitly]
     public class Configuration
     {
         private Configuration()
@@ -45,7 +43,6 @@ namespace Xabe.VideoConverter
         bool AutoUpdate { get; set; }
     }
 
-    [UsedImplicitly]
     public class Settings: ISettings
     {
         public string[] Extensions { get; set; }
@@ -65,7 +62,6 @@ namespace Xabe.VideoConverter
         public bool AutoUpdate { get; set; }
     }
 
-    [UsedImplicitly]
     public class Log
     {
         public string ErrorPath { get; set; }
